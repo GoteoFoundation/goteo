@@ -3,6 +3,8 @@
     if ($announcements):
 ?>
     <div class="announcement">
+        <button class="close" aria-label="Close" onclick="this.parentNode.style.display='none'"><i class="fa fa-close"></i></button>
+
         <div class="container">
             <div class="row">
             <?php foreach($announcements as $announcement): ?>

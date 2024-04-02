@@ -1,5 +1,5 @@
 .announcement {
-    background-color:  $background-dark-lilac;
+    background-color: $background-dark-lilac;
     color: $color-white;
 
     h1 {
@@ -8,6 +8,15 @@
 
     p {
         text-wrap: balance;
+    }
+
+    button.close {
+        position: relative;
+        top: 1em;
+        right: 1em;
+        z-index: 1;
+        opacity: 0.8;
+        color: $color-white;
     }
 
     .container {
@@ -19,9 +28,9 @@
 
             @media (max-width: $breakpoint-sm) {
                 display: block;
-            }    
+            }
         }
-        
+
         .cta {
             margin: auto;
         }
