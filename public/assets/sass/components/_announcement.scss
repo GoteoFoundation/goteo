@@ -1,0 +1,29 @@
+.announcement {
+    background-color:  $background-dark-lilac;
+    color: $color-white;
+
+    h1 {
+        text-wrap: pretty;
+    }
+
+    p {
+        text-wrap: balance;
+    }
+
+    .container {
+        margin-top: 1em;
+        margin-bottom: 1em;
+
+        .row {
+            display: flex;
+
+            @media (max-width: $breakpoint-sm) {
+                display: block;
+            }    
+        }
+        
+        .cta {
+            margin: auto;
+        }
+    }
+}

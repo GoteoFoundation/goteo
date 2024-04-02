@@ -77,6 +77,7 @@ if($sidebar) {
 
     <?= $this->supply('header', $this->insert("partials/header")) ?>
     <?= $this->supply('search', $this->insert("partials/search")) ?>
+    <?= $this->supply('announcements', $this->insert("partials/components/announcements")) ?>
 
     <div class="page-wrap">
       <?= $this->supply('sidebar', $this->insert("partials/sidebar", ['sidebarMenu' => $sidebar])) ?>

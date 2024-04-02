@@ -20,6 +20,7 @@ use Goteo\Model\Sdg;
 use Goteo\Model\Stories;
 use Goteo\Model\Node;
 use Goteo\Model\Sponsor;
+use Goteo\Repository\AnnouncementRepository;
 use Goteo\Util\Stats\Stats;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -56,6 +57,9 @@ class IndexController extends DiscoverController
             $sdg_by_footprint[$footprint->id] = Sdg::getList(['footprint' => $footprint->id]);
         }
 
+        $announcementRepository = new AnnouncementRepository();
+        $announcementList = $announcementRepository->getActiveList();
+
         return $this->viewResponse('home/index', [
             'banners'   => $banners,
             'projects'  => $projects,
@@ -71,6 +75,7 @@ class IndexController extends DiscoverController
             'projects_by_footprint' => $projects_by_footprint,
             'sdg_by_footprint' => $sdg_by_footprint,
             'footprint_impact_data' => $footprintImpactData,
+            'announcements' => $announcementList
         ]);
     }
 
