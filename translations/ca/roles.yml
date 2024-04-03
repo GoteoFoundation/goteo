@@ -52,6 +52,7 @@ role-perm-name-admin-module-categories: 'Pot accedir al mòdul de Categories'
 role-perm-name-admin-module-workshops: 'Pot accedir al mòdul de tallers'
 role-perm-name-admin-module-promote: 'Pot accedir al mòdul de descatar projectes a la home'
 role-perm-name-admin-module-channels: "Pot accedir als mòduls d'administració dels canals"
+role-perm-name-admin-module-announcements: "Pot accedir al módul d'administració dels anuncis"
 role-perm-name-create-matcher: 'Pot crear matchers'
 role-perm-name-edit-matcher: 'Pot editar matchers'
 role-perm-name-remove-matcher: 'Pot esborrar els seus matchers'

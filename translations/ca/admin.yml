@@ -315,3 +315,6 @@ admin-impact-data-result_msg-help: "Aquest camp permet afegir un missatge al cà
 admin-impact-data-type-estimation: "Estimació"
 admin-impact-data-type-real: "Real"
 admin-subscriptions: "Subscripcions"
+admin-announcements-type-general: "General"
+admin-announcements-type-donations: "Donacions"
+admin-announcements-type-projects: "Projectes"
