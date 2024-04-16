@@ -12,25 +12,26 @@ namespace Goteo\Entity;
 
 use Goteo\Model\Project;
 
-class Announcement {
+class Announcement
+{
 
     const TYPE_GENERAL = 'general';
     const TYPE_DONATION = 'donation';
     const TYPE_PROJECT = 'project';
 
-    private int $id;
-    private string $title;
-    private string $description;
-    private ?Project $project;
+    private ?int $id = null;
+    private ?string $title = null;
+    private ?string $description = null;
+    private ?Project $project = null;
     private string $type = self::TYPE_GENERAL;
     private string $lang;
-    private string $cta_url;
-    private string $cta_text;
-    private bool $active;
+    private ?string $cta_url = null;
+    private ?string $cta_text = null;
+    private bool $active = false;
     private ?\DateTime $start_date;
     private ?\DateTime $end_data;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -41,7 +42,7 @@ class Announcement {
         return $this;
     }
 
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -52,7 +53,7 @@ class Announcement {
         return $this;
     }
 
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -96,7 +97,7 @@ class Announcement {
         return $this;
     }
 
-    public function getCtaUrl(): string
+    public function getCtaUrl(): ?string
     {
         return $this->cta_url;
     }
@@ -107,7 +108,7 @@ class Announcement {
         return $this;
     }
 
-    public function getCtaText(): string
+    public function getCtaText(): ?string
     {
         return $this->cta_text;
     }
@@ -169,5 +170,14 @@ class Announcement {
     public function isADonationAnnouncement(): bool
     {
         return self::TYPE_DONATION == $this->type;
+    }
+
+    public static function getTypes(): array
+    {
+        return [
+            self::TYPE_GENERAL,
+            self::TYPE_DONATION,
+            self::TYPE_PROJECT
+        ];
     }
 }
