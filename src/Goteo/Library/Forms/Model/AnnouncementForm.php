@@ -97,8 +97,11 @@ class AnnouncementForm extends EntityFormProcessor
         $announcement->setDescription($data['description']);
         $announcement->setActive($data['active']);
         $announcement->setLang(Session::get('lang'));
-        $announcement->setCtaUrl($data['cta_url']);
-        $announcement->setCtaText($data['cta_text']);
+        if (isset($data['cta_url']))
+            $announcement->setCtaUrl($data['cta_url']);
+
+        if (isset($data['cta_text']))
+            $announcement->setCtaText($data['cta_text']);
 
 
         $announcementRepository = new AnnouncementRepository();

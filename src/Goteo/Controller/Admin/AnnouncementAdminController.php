@@ -10,13 +10,12 @@
 
 namespace Goteo\Controller\Admin;
 
-use Exception;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-use Goteo\Application\Config;
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Message;
+use Goteo\Application\Session;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Entity\Announcement;
 use Goteo\Library\Text;
@@ -69,7 +68,6 @@ class AnnouncementAdminController extends AbstractAdminController
 
         $count = $this->announcementRepository->count();
         $announcements = $this->announcementRepository->getList(0, $count);
-
 
         return $this->viewResponse('admin/announcements/list', [
             'list' => $announcements,
