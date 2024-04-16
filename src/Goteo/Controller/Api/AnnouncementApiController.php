@@ -16,45 +16,47 @@ use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
 use Goteo\Repository\AnnouncementRepository;
 
-class AnnouncementApiController extends AbstractApiController {
+class AnnouncementApiController extends AbstractApiController
+{
 
     protected AnnouncementRepository $announcementRepository;
 
-    public function __construct() {
+    public function __construct()
+    {
 
         parent::__construct();
         $this->announcementRepository = new AnnouncementRepository();
     }
 
-    protected function validateAnnouncement(int $id) {
+    protected function validateAnnouncement(int $id)
+    {
 
-        if(!$this->user)
+        if (!$this->user)
             throw new ControllerAccessDeniedException();
 
         $announcement = $this->announcementRepository->getById($id);
 
-        if(!$announcement)
+        if (!$announcement)
             throw new ModelNotFoundException();
 
-        if($this->user->hasPerm('admin-module-announcements')) {
-            var_dump("what"); die;
-            return $announcement;
-        }
+        if (!$this->is_admin)
+            throw new ControllerAccessDeniedException();
 
-        throw new ControllerAccessDeniedException();
+        return $announcement;
     }
 
-    public function announcementPropertyAction($id, $prop, Request $request) {
+    public function announcementPropertyAction(Request $request, $id, $prop)
+    {
         $announcement = $this->validateAnnouncement($id);
 
-        if(!$announcement) throw new ModelNotFoundException();
+        if (!$announcement) throw new ModelNotFoundException();
 
         if (!$prop == 'active')
             return [];
 
-        if($request->isMethod(Request::METHOD_PUT) && $request->request->has('value')) {
+        if ($request->isMethod(Request::METHOD_PUT) && $request->request->has('value')) {
 
-            if(!$this->user || !$this->user->hasPerm('admin-module-announcement'))
+            if (!$this->user || !$this->user->hasPerm('admin-module-announcements'))
                 throw new ControllerAccessDeniedException();
 
             $value = $request->request->getBoolean('value');
@@ -65,15 +67,14 @@ class AnnouncementApiController extends AbstractApiController {
 
             $result['value'] = $announcement->isActive();
 
-            if($errors = Message::getErrors()) {
+            if ($errors = Message::getErrors()) {
                 $result['error'] = true;
                 $result['message'] = implode("\n", $errors);
             }
-            if($messages = Message::getMessages()) {
+            if ($messages = Message::getMessages()) {
                 $result['message'] = implode("\n", $messages);
             }
         }
         return $this->jsonResponse($result);
     }
-
 }
