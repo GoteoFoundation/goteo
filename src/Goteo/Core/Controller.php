@@ -159,4 +159,29 @@ abstract class Controller {
         return $processor;
     }
 
+    public function getEntityForm(
+        string $formClass,
+        $model,
+        array $defaults = [],
+        array $options = [],
+        Request $request = null,
+        array $formBuilderOptions = ['csrf_protection' => false]
+    ): FormProcessorInterface {
+        /** @var $finder FormFinder */
+        $finder = App::getService('app.forms.finder');
+
+        $finder->setModel($model);
+        $validate = $mock_validation = false;
+        if ($request) {
+            $validate = $request->query->has('validate');
+            $mock_validation = $validate && $request->isMethod('get');
+        }
+
+        $finder->setBuilder($this->createFormBuilder($defaults, 'autoform', $formBuilderOptions));
+        $processor = $finder->getInstance($formClass, $options);
+
+        $processor->setFullValidation($validate, $mock_validation);
+
+        return $processor;
+    }
 }

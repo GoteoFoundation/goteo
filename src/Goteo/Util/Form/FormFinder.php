@@ -11,9 +11,9 @@
 namespace Goteo\Util\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
-use Goteo\Core\Model;
 
-class FormFinder {
+class FormFinder
+{
     private $builder;
     private $model;
 
@@ -23,21 +23,24 @@ class FormFinder {
         return $this;
     }
 
-    public function getBuilder() {
+    public function getBuilder()
+    {
         return $this->builder;
     }
 
-    public function setModel(Model $model): FormFinder
+    public function setModel($model): FormFinder
     {
         $this->model = $model;
         return $this;
     }
 
-    public function getModel() {
+    public function getModel()
+    {
         return $this->model;
     }
 
-    public function getInstance(string $formClass, array $options = []) {
+    public function getInstance(string $formClass, array $options = [])
+    {
         return new $formClass($this->builder, $this->model, $options);
     }
 }

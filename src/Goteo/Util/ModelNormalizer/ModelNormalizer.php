@@ -9,6 +9,7 @@
  */
 namespace Goteo\Util\ModelNormalizer;
 
+use Goteo\Entity\Announcement;
 use Goteo\Core\Model as CoreModel;
 use Goteo\Model;
 use Goteo\Util\ModelNormalizer\Transformer;
@@ -93,6 +94,9 @@ class ModelNormalizer {
         }
         elseif ($this->model instanceOf Model\ImpactItem\ImpactProjectItemCost) {
             $ob = new Transformer\ImpactProjectItemCostTransformer($this->model, $this->keys);
+        }
+        elseif ($this->model instanceOf Announcement) {
+            $ob = new Transformer\AnnouncementTransformer($this->model, $this->keys);
         }
         else $ob = new Transformer\GenericTransformer($this->model, $this->keys);
 
