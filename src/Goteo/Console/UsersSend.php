@@ -64,74 +64,75 @@ class UsersSend extends AbstractCommandController {
             $consultants = current(self::$consultants);
         }
 
-
+        $search = [];
+        $replace = [];
 
         /// tipo de envio
         switch ($type) {
             // Estos son avisos de final de ronda
             case 'unique_pass': // template 20, proyecto finaliza la única ronda
-                $tpl = 60;
+                $tpl = Template::OWNER_PROJECT_SINGLE_ROUND;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%REWARDSURL%');
                 $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/rewards');
                 break;
 
             case 'r1_pass': // template 20, proyecto supera la primera ronda
-                $tpl = 20;
+                $tpl = Template::OWNER_PROJECT_1_ROUND;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%');
                 $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/widgets');
                 break;
 
             case 'fail': // template 21, caduca sin conseguir el mínimo
-                $tpl = 21;
+                $tpl = Template::OWNER_PROJECT_FAILED;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%SUMMARYURL%');
                 $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/summary');
                 break;
 
             case 'r2_pass': // template 22, finaliza segunda ronda
-                $tpl = 22;
+                $tpl = Template::OWNER_PROJECT_2_ROUND;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%REWARDSURL%');
                 $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/rewards');
                 break;
 
             // Estos son avisos de auto-tips de /cron/daily
             case '8_days': // template 13, cuando faltan 8 días y no ha conseguido el mínimo
-                $tpl = 13;
-                $search  = array('%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%');
-                $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/widgets');
+                $tpl = Template::ADVISE_8_DAYS_TO_FAIL;
+                $search  = ['%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%', '%DATE_PROJECT_PASSES%', '%NOMBREASESOR%'];
+                $replace = [$project->user->name, $project->name, self::getURL() . '/dashboard/projects/widgets', $project->getWhenWillPass(), $consultants];
                 break;
 
             case '2_days': // template 14, cuando faltan 2 días y no ha conseguido el mínimo
-                $tpl = 14;
-                $search  = array('%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%');
-                $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/widgets');
+                $tpl = Template::ADVISE_2_DAYS_TO_FAIL;
+                $search  = ['%USERNAME%', '%PROJECTNAME%'];
+                $replace = [$project->user->name, $project->name];
                 break;
 
-            case '14_days': // info about required contract documentation 
+            case '14_days': // info about required contract documentation
                 $tpl = Template::CONTRACT_PREVIOUS_INFORMATION;
                 $search  = array('%USERNAME%', '%PROJECTNAME%');
                 $replace = array($project->user->name, $project->name);
                 break;
 
             case 'two_weeks': // template 19, "no bajes la guardia!" 25 días de campaña
-                $tpl = 19;
+                $tpl = Template::ADVISE_25_DAY;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%WIDGETURL%');
                 $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/widgets');
                 break;
 
             case 'no_updates': // template 23, 3 meses sin novedades
-                $tpl = 23;
+                $tpl = Template::ADVISE_16_DAYS;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%UPDATESURL%');
                 $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/updates');
                 break;
 
             case 'any_update': // template 24, no hay posts de novedades
-                $tpl = 24;
+                $tpl = Template::ADVISE_6_DAYS;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%UPDATESURL%', '%NOVEDADES%');
                 $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/updates', self::getURL().'/project/'.$project->id.'/updates');
                 break;
 
             case '1d_after': // template 55, dia siguiente de financiado
-                $tpl = 55;
+                $tpl = Template::CONTRACT;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%');
                 $replace = array($project->user->name, $project->name, self::getURL().'/dashboard/project/'.$project->id.'/contract');
                 break;
@@ -149,26 +150,26 @@ class UsersSend extends AbstractCommandController {
                 break;
 
             case '2m_after': // template 25, dos meses despues de financiado
-                $tpl = 25;
+                $tpl = Template::ADVISE_2_MONTHS;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%REWARDSURL%');
                 $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/rewards');
                 break;
 
             case '8m_after': // template 52, ocho meses despues de financiado
-                $tpl = 52;
+                $tpl = Template::OWNER_REWARD_REMINDER;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%COMMONSURL%');
                 $replace = array($project->user->name, $project->name, self::getURL() . '/dashboard/projects/shared-materials');
                 break;
 
             case '20_backers': // template 46, "Apóyate en quienes te van apoyando "  (en cuanto se llega a los 20 backers
-                $tpl = 46;
+                $tpl = Template::ADVISE_7_DAYS;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NUMBACKERS%');
                 $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, $project->num_investors);
                 break;
 
             case 'project_to_review': // template 8, "Confirmacion de proyecto enviado".  template 62, "Al enviar tras la negociación"
                 // tener en cuenta si están enviando el draft o la negociación
-                $tpl = ($project->draft) ? 8 : 62;
+                $tpl = ($project->draft) ? Template::PROJECT_SENT_CONFIRM : Template::OWNER_PROJECT_REVIEWED;
 
                 $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%', '%NOMBREASESOR%');
                 $replace = array($project->name, $project->user->name, self::getURL().'/project/'.$project->id, self::getURL().'/project/edit/'.$project->id, $consultants);
@@ -183,7 +184,7 @@ class UsersSend extends AbstractCommandController {
                 break;
 
             case 'tip_0':
-                $tpl = 57;
+                $tpl = Template::ADVISE_0_DAYS;
 
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NOMBREASESOR%');
                 $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, $consultants);
@@ -191,65 +192,88 @@ class UsersSend extends AbstractCommandController {
 
             // consejos normales
             case 'tip_1': // template 41, "Difunde, difunde, difunde"
-                $tpl = 41;
+                $tpl = Template::ADVISE_1_DAYS;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%PORCENTAJE%');
                 $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, $project->percent);
                 break;
 
             case 'tip_2': // template 42, "Comienza por lo más próximo"
-                $tpl = 42;
+                $tpl = Template::ADVISE_2_DAYS;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%PORCENTAJE%');
                 $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, $project->percent);
                 break;
 
             case 'tip_3': // template 43, "Una acción a diario, por pequeña que sea"
-                $tpl = 43;
+                $tpl = Template::ADVISE_3_DAYS;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%');
                 $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, $project->amount);
                 break;
 
             case 'tip_4': // template 44, "Llama a todas las puertas"
-                $tpl = 44;
+                $tpl = Template::ADVISE_4_DAYS;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%BACKERSURL%');
                 $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, self::getURL().'/project/'.$project->id.'/supporters');
                 break;
 
             case 'tip_5': // template 45, "Busca dónde está tu comunidad"
-                $tpl = 45;
+                $tpl = Template::ADVISE_5_DAYS;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%AMOUNT%', '%NUMBACKERS%');
                 $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, $project->amount, $project->num_investors);
                 break;
 
             case 'tip_8': // template 47, "Agradece en público e individualmente"
-                $tpl = 47;
+                $tpl = Template::ADVISE_8_DAYS;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%MESSAGESURL%');
                 $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, self::getURL().'/project/'.$project->id.'/messages');
                 break;
 
             case 'tip_9': // template 48, "Busca prescriptores e implícalos"
-                $tpl = 48;
+                $tpl = Template::ADVISE_9_DAYS;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%PORCENTAJE%');
                 $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, $project->percent);
                 break;
 
             case 'tip_10': // template 49, "Luce tus recompensas y retornos"
-                $tpl = 49;
+                $tpl = Template::ADVISE_10_DAYS;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%LOWREWARD%', '%HIGHREWARD%');
                 $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, $project->lower, $project->higher);
                 break;
 
             case 'tip_11': // template 50, "Refresca tu mensaje de motivacion"
-                $tpl = 50;
+                $tpl = Template::ADVISE_11_DAYS;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%');
                 $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id);
                 break;
 
             case 'tip_15': // template 51, "Sigue los avances y calcula lo que falta"
-                $tpl = 51;
+                $tpl = Template::ADVISE_15_DAYS;
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%DIASCAMPAÑA%', '%DAYSTOGO%');
                 $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, $project->days, $project->days);
                 break;
 
+            case 'face_to_face_event':
+                $tpl = Template::FACE_TO_FACE_EVENT;
+                $search  = array('%USERNAME%');
+                $replace = array($project->user->name);
+                break;
+
+            case 'online_event':
+                $tpl = Template::ONLINE_EVENT;
+                $search  = ['%USERNAME%', '%AMOUNT%', '%PROJECTNAME%'];
+                $replace = [$project->user->name, $project->amount, $project->name];
+                break;
+
+            case 'press':
+                $tpl = Template::PRESS;
+                $search  = ['%USERNAME%'];
+                $replace = [$project->user->name];
+                break;
+
+            case 'invest_in_social_networks':
+                $tpl = Template::INVEST_IN_SOCIAL_NETWORKS;
+                $search  = ['%USERNAME%'];
+                $replace = [$project->user->name];
+                break;
         }
 
 
@@ -326,7 +350,7 @@ class UsersSend extends AbstractCommandController {
         /// tipo de envio
         switch ($type) {
             case 'commons': // template 56, "Mensaje al asesor de un proyecto 10 meses despues de financiado sin haber cumplido"
-                $tpl = 56;
+                $tpl = Template::CONSULTANT_PROJECT_REWARD_FAIL;
 
                 $contact = Model\Project::getContact($project->id);
                 $info_html = new View('admin/commons/contact.html.php', array('contact' => $contact));
@@ -337,14 +361,14 @@ class UsersSend extends AbstractCommandController {
                 break;
 
             case 'tip_0':
-                $tpl = 57;
+                $tpl = Template::ADVISE_0_DAYS;
 
                 $search  = array('%USERNAME%', '%PROJECTNAME%', '%PROJECTURL%', '%NOMBREASESOR%');
                 $replace = array($project->user->name, $project->name, self::getURL().'/project/'.$project->id, implode(', ', $consultants));
                 break;
 
             case 'rewardfulfilled': // template 58, "Aviso a asesores cuando un impulsor indica la url de retorno colectivo"
-                $tpl = 58;
+                $tpl = Template::CONSULTANT_PROJECT_PUBLIC_REWARD_FILL;
 
                 $commons_url = self::getURL() . '/admin/commons/view/' . $project->id;
                 $reward = Model\Project\Reward::get($_POST['reward']);
@@ -355,14 +379,14 @@ class UsersSend extends AbstractCommandController {
                 break;
 
             case 'project_to_review_consultant': // template 59, "Aviso a asesores cuando un impulsor envia el proyecto a revisión"
-                $tpl = 59;
+                $tpl = Template::CONSULTANT_PROJECT_VALIDATE;
 
                 $search  = array('%PROJECTNAME%', '%USERNAME%', '%PROJECTURL%', '%PROJECTEDITURL%', '%COMMENT%');
                 $replace = array($project->name, $project->user->name, self::getURL().'/project/'.$project->id, self::getURL().'/project/edit/'.$project->id, $project->comment);
                 break;
 
             case 'project_preform_to_review_consultant': // template 63, "Aviso a asesores cuando un impulsor envia el proyecto a revisión desde preform"
-                $tpl = 63;
+                $tpl = Template::CONSULTANT_PROJECT_SENT;
 
                 // get the project configuration
                 $conf = Model\Project\Conf::get($project->id);
@@ -445,36 +469,36 @@ class UsersSend extends AbstractCommandController {
         // - Separamos los replaces de contenido de los replaces individuales (%USERNAME%)
         switch ($type) {
             case 'unique_pass': // template 61, finaliza única ronda
-                    $tpl = 61;
+                    $tpl = Template::DONORS_PROJECT_SINGLE_ROUND;
                     $search  = array('%PROJECTNAME%', '%PROJECTURL%');
                     $replace = array($project->name, self::getURL() . '/project/' . $project->id);
                 break;
 
             case 'r1_pass': // template 15, proyecto supera la primera ronda
-                    $tpl = 15;
+                    $tpl = Template::DONORS_PROJECT_1_ROUND;
                     $search  = array('%PROJECTNAME%', '%PROJECTURL%');
                     $replace = array($project->name, self::getURL() . '/project/' . $project->id);
                 break;
 
             case 'fail': // template 17, proyecto no consigue el mínimo
-                    $tpl = 17;
+                    $tpl = Template::DONORS_PROJECT_FAILED;
                     $search  = array('%PROJECTNAME%', '%DISCOVERURL%');
                     $replace = array($project->name, self::getURL() . '/discover');
                 break;
 
             case 'r2_pass': // template 16, finaliza segunda ronda
-                    $tpl = 16;
+                    $tpl = Template::DONORS_PROJECT_2_ROUND;
                     $search  = array('%PROJECTNAME%', '%PROJECTURL%');
                     $replace = array($project->name, self::getURL() . '/project/' . $project->id);
                 break;
 
             case 'update': // template 18, publica novedad
-                    $tpl = 18;
+                    $tpl = Template::DONORS_PROJECT_NEWS;
                     $post_url = self::getURL().'/project/'.$project->id.'/updates/'.$post->id;
                     // contenido del post
                     $template_type = Template::get($tpl)->type;
 
-                    $post_content = "**{$post->title}**  
+                    $post_content = "**{$post->title}**
                         " . Text::recorta($post->text, 500);
 
                     // y preparar los enlaces para compartir en redes sociales
