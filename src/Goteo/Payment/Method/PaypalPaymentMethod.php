@@ -31,7 +31,7 @@ class PaypalPaymentMethod extends AbstractPaymentMethod
         $project = Project::get($invest->project);
         $transactionId = sprintf("%s-%s", $project->getNumericId(), $invest->id);
 
-        $invest->setTransaction($transactionId);
+        $invest->setPreapproval($transactionId);
 
         // You can specify your paypal gateway details in config/settings.yml
         if (!$gateway->getLogoImageUrl()) $gateway->setLogoImageUrl(SRC_URL . '/goteo_logo.png');
