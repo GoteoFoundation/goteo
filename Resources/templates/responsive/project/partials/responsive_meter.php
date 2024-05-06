@@ -248,29 +248,18 @@ use Goteo\Library\Check;
 <?php endif; ?>
 
 <?php if ($project->sign_url): ?>
-
-        <div class="visible-xs sign" >
-            <a href="<?= $project->sign_url ?>" target="_blank" class="btn btn-block btn-sign col-sm-10 text-uppercase">
-                <?= $project->sign_url_action ?>
-            </a>
-        </div>
-
+    <div class="visible-xs sign" >
+        <a href="<?= $project->sign_url ?>" title="<?= $project->sign_url_action ?>" target="_blank" class="btn btn-block btn-sign col-sm-10 text-uppercase">
+            <?= $project->sign_url_action ?>
+        </a>
+    </div>
 <?php endif; ?>
 
 
- <?php if ($project->node !== $this->get_config('current_node')&&($project->nodeData->active)) : ?>
-
-    <div class="visible-xs channel" >
-        <span class="channel-label">
-            <img src="/assets/img/project/channel.svg" width="20" alt=""> <?= $this->text('regular-channel') ?>
-        </span>
-        <a href="<?= $project->nodeData->url ?>">
-            <button class="btn" style="<?= $project->nodeData->owner_background ? 'background-color: '.$project->nodeData->owner_background :  '' ?>" >
-                <?= $project->nodeData->name ?>
-            </button>
-        </a>
+<?php if (!empty($this->channels) || isset($project->node)):?>
+    <div class="visible-xs channel">
+        <?= $this->insert('project/partials/channel_slider', ['channels' => $this->channels]) ?>
     </div>
-
 <?php endif; ?>
 
 

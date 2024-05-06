@@ -51,7 +51,7 @@ class SubscriptionRequest extends AbstractRequest
             'complete'
         ));
 
-        $session = $this->stripe->checkout->sessions->create([
+        $checkout = $this->stripe->checkout->sessions->create([
             'customer' => $customer,
             'success_url' => $successUrl,
             'cancel_url' => $this->getRedirectUrl('project', $project->id),
@@ -71,59 +71,58 @@ class SubscriptionRequest extends AbstractRequest
             'metadata' => $metadata
         ]);
 
-        return new SubscriptionResponse($this, $session->id);
+        return new SubscriptionResponse($this, $checkout);
     }
 
     public function completePurchase(array $options = [])
     {
         // Dirty sanitization because something is double concatenating the ?session_id query param
         $sessionId = explode('?', $_REQUEST['session_id'])[0];
-        $session = $this->stripe->checkout->sessions->retrieve($sessionId);
-        $metadata = $session->metadata->toArray();
+        $checkout = $this->stripe->checkout->sessions->retrieve($sessionId);
+        $metadata = $checkout->metadata->toArray();
 
-        if ($session->subscription) {
-            $this->stripe->subscriptions->update(
-                $session->subscription,
-                [
-                    'metadata' => $metadata
-                ]
-            );
-    
-            if ($metadata['donate_amount'] < 1) {
-                return new SubscriptionResponse($this, $session->id);
-            }
+        if (!$checkout->subscription) {
+            throw new \Exception("Could not retrieve Subscription from Stripe after checkout");
+        }
 
-            $donation = $this->stripe->checkout->sessions->create([
-                'customer' => $this->getStripeCustomer(User::get($metadata['user']))->id,
-                'success_url' => sprintf('%s?session_id={CHECKOUT_SESSION_ID}', $this->getRedirectUrl(
-                    'invest',
-                    $metadata['project'],
-                    $metadata['invest'],
-                    'complete'
-                )),
-                'cancel_url' => $this->getRedirectUrl('project', $metadata['project']->id),
-                'mode' => CheckoutSession::MODE_PAYMENT,
-                'line_items' => [
-                    [
-                        'price' => $this->stripe->prices->create([
-                            'unit_amount' => $metadata['donate_amount'] * 100,
-                            'currency' => Config::get('currency'),
-                            'product_data' => [
-                                'name' => Text::get('donate-meta-description')
-                            ]
-                        ])->id,
-                        'quantity' => 1
-                    ]
-                ],
+        $subscription = $this->stripe->subscriptions->retrieve($checkout->subscription);
+        $this->stripe->subscriptions->update(
+            $checkout->subscription,
+            [
                 'metadata' => $metadata
-            ]);
-    
-            return new DonationResponse($this, $donation->id);
+            ]
+        );
+
+        if ($metadata['donate_amount'] < 1) {
+            return new SubscriptionResponse($this, $checkout, $subscription);
         }
 
-        if ($session->payment_intent) {
-            return new SubscriptionResponse($this, $session->id);
-        }
+        $donationCheckout = $this->stripe->checkout->sessions->create([
+            'customer' => $this->getStripeCustomer(User::get($metadata['user']))->id,
+            'success_url' => sprintf('%s?session_id={CHECKOUT_SESSION_ID}', $this->getRedirectUrl(
+                'invest',
+                $metadata['project'],
+                $metadata['invest'],
+                'complete'
+            )),
+            'cancel_url' => $this->getRedirectUrl('project', $metadata['project']->id),
+            'mode' => CheckoutSession::MODE_PAYMENT,
+            'line_items' => [
+                [
+                    'price' => $this->stripe->prices->create([
+                        'unit_amount' => $metadata['donate_amount'] * 100,
+                        'currency' => Config::get('currency'),
+                        'product_data' => [
+                            'name' => Text::get('donate-meta-description')
+                        ]
+                    ])->id,
+                    'quantity' => 1
+                ]
+            ],
+            'metadata' => $metadata
+        ]);
+
+        return new DonationResponse($this, $donationCheckout);
     }
 
     private function getRedirectUrl(...$args): string

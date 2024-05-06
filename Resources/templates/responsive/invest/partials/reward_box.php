@@ -68,6 +68,12 @@ $available = $reward->available();
                                    title="<?= $this->t('regular-amount') ?>"
                                    aria-labelledby="amount-<?= $reward->id ?>"
                                    required>
+                            <input type="number"
+                                   class="form-control input-amount"
+                                   name="donate_amount"
+                                   value="<?= $this->donate_amount ? $this->donate_amount : amount_format($this->get_config('donate.tip'), 0, true) ?>"
+                                   id="donate_amount-<?= $reward->id ?>"
+                                   style="display:none;">
                         </div>
                         <div class="col-sm-5 col-sm-offset-1 reward-button">
                             <button type="submit" class="btn btn-block btn-success col-xs-3 margin-2"><?= $this->text('invest-button') ?></button>

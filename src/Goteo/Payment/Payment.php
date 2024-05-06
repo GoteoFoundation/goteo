@@ -15,6 +15,7 @@ use Goteo\Application\Session;
 use Goteo\Model\user;
 
 use Goteo\Payment\Method\PaymentMethodInterface;
+use Goteo\Payment\Method\StripeSubscriptionPaymentMethod;
 
 /**
  * A statically defined class to manage payments
@@ -123,5 +124,31 @@ class Payment {
             self::$default_method = key(self::$methods);
         }
         return self::$default_method;
+    }
+
+    /**
+     * @return PaymentMethodInterface[]
+     */
+    static public function getSubscriptionMethods(): array
+    {
+        return array_filter(self::$methods, function($method) {
+            switch (\get_class($method)) {
+                case StripeSubscriptionPaymentMethod::class:
+                    return true;
+                default:
+                    return false;
+                    break;
+            }
+        });
+    }
+
+    static public function isSubscriptionMethod(string $method): bool
+    {
+        if (!self::getMethod($method)) return false;
+
+        $name = $method;
+        return 0 < count(array_filter(self::getSubscriptionMethods(), function ($method) use ($name) {
+            return $method::getId() === $name;
+        }));
     }
 }
