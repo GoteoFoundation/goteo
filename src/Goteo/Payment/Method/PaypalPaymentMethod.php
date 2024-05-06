@@ -11,9 +11,11 @@
 namespace Goteo\Payment\Method;
 
 use Goteo\Application\Currency;
+use Goteo\Model\Project;
 use Omnipay\Common\Message\ResponseInterface;
 
-class PaypalPaymentMethod extends AbstractPaymentMethod {
+class PaypalPaymentMethod extends AbstractPaymentMethod
+{
 
     public function getGatewayName(): string
     {
@@ -24,10 +26,25 @@ class PaypalPaymentMethod extends AbstractPaymentMethod {
     {
         $gateway = $this->getGateway();
 
-        // You can specify your paypal gateway details in config/settings.yml
-        if(!$gateway->getLogoImageUrl()) $gateway->setLogoImageUrl(SRC_URL . '/goteo_logo.png');
+        $invest = $this->getInvest();
+        $project = Project::get($invest->project);
 
-        return parent::purchase();
+        $transactionId = sprintf("%s-%s", $project->getNumericId(), $invest->id);
+
+        $invest->setTransaction($transactionId);
+
+        // You can specify your paypal gateway details in config/settings.yml
+        if (!$gateway->getLogoImageUrl()) $gateway->setLogoImageUrl(SRC_URL . '/goteo_logo.png');
+
+        $request = $gateway->purchase([
+            'amount' => (float) $this->getTotalAmount(),
+            'description' => $this->getInvestDescription(),
+            'returnUrl' => $this->getCompleteUrl(),
+            'cancelUrl' => $this->getCompleteUrl(),
+            'transactionId' => $transactionId,
+        ]);
+
+        return $request->send();
     }
 
     public function completePurchase(): ResponseInterface
@@ -49,5 +66,4 @@ class PaypalPaymentMethod extends AbstractPaymentMethod {
 
         return $payment->send();
     }
-
 }
