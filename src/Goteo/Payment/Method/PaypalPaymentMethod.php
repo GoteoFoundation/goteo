@@ -40,6 +40,7 @@ class PaypalPaymentMethod extends AbstractPaymentMethod
 
         $request = $gateway->purchase([
             'amount' => (float) $this->getTotalAmount(),
+            'currency' => $gateway->getCurrency(),
             'description' => $this->getInvestDescription(),
             'returnUrl' => $this->getCompleteUrl(),
             'cancelUrl' => $this->getCompleteUrl(),
