@@ -26,8 +26,13 @@ class FormHoneypot extends Model
      */
     public $template = 'partials/form/honeypot';
 
+    /**
+     * The date at wich the trap was laid
+     */
+    public $date;
+
     protected $Table = 'form_honeypot';
-    static protected $Table_static = 'impact_item';
+    static protected $Table_static = 'form_honeypot';
 
     public function save(&$errors = array())
     {
@@ -52,6 +57,7 @@ class FormHoneypot extends Model
         $honeypot = new FormHoneypot;
         $honeypot->trap = "email_addr_confirm";
         $honeypot->prey = "";
+        $honeypot->date = new \DateTime();
         $honeypot->params = [
             'trap' => $honeypot->trap,
             'prey' => $honeypot->prey

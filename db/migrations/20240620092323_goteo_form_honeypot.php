@@ -37,7 +37,8 @@ class GoteoFormHoneypot
                 `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
                 `trap` VARCHAR(50) NOT NULL,
                 `prey` TEXT,
-                `template` TEXT,    
+                `template` TEXT,
+                `datetime` TIMESTAMP,
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
             ";
