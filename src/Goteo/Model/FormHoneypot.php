@@ -29,7 +29,7 @@ class FormHoneypot extends Model
     /**
      * The date at wich the trap was laid
      */
-    public $date;
+    public $datetime;
 
     protected $Table = 'form_honeypot';
     static protected $Table_static = 'form_honeypot';
@@ -38,7 +38,7 @@ class FormHoneypot extends Model
     {
         if (!$this->validate($errors)) return false;
 
-        $this->dbInsertUpdate(['id', 'trap', 'prey', 'template']);
+        $this->dbInsertUpdate(['id', 'trap', 'prey', 'template', 'datetime']);
     }
 
     public function validate(&$errors = array())
@@ -57,7 +57,7 @@ class FormHoneypot extends Model
         $honeypot = new FormHoneypot;
         $honeypot->trap = "email_addr_confirm";
         $honeypot->prey = "";
-        $honeypot->date = new \DateTime();
+        $honeypot->datetime = new \DateTime();
         $honeypot->params = [
             'trap' => $honeypot->trap,
             'prey' => $honeypot->prey
