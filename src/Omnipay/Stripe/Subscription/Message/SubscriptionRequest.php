@@ -43,7 +43,7 @@ class SubscriptionRequest extends AbstractRequest
 
         $successUrl = sprintf('%s?session_id={CHECKOUT_SESSION_ID}', $this->getRedirectUrl(
             'invest',
-            $project->id,
+            $metadata['project'],
             $invest->id,
             'complete'
         ));
@@ -168,11 +168,16 @@ class SubscriptionRequest extends AbstractRequest
         try {
             return $this->stripe->products->retrieve($productId);
         } catch (\Stripe\Exception\InvalidRequestException $e) {
-            $productDescription = sprintf(
-                '%s - %s',
-                $project->name,
-                $this->getInvestReward($invest, Text::get('invest-resign'))
-            );
+            if ($project = $invest->getProject()) {
+                $productDescription = sprintf(
+                    '%s - %s',
+                    $project->name,
+                    $this->getInvestReward($invest, Text::get('invest-resign'))
+                );
+            } else {
+                $productDescription = Text::get('invest-pool-method');
+            }
+
 
             return $this->stripe->products->create([
                 'id' => $productId,
