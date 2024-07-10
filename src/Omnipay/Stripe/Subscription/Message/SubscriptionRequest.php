@@ -41,23 +41,31 @@ class SubscriptionRequest extends AbstractRequest
         $customer = $this->getStripeCustomer($user)->id;
         $metadata = $this->getMetadata($invest);
 
-        $successUrl = sprintf('%s?session_id={CHECKOUT_SESSION_ID}', $this->getRedirectUrl(
-            'invest',
-            $metadata['project'],
-            $invest->id,
-            'complete'
-        ));
+        $successUrl = $this->getRedirectUrl('pool', $invest->id, 'complete');
+        if ($invest->getProject()) {
+            $successUrl = $this->getRedirectUrl(
+                'invest',
+                $metadata['project'],
+                $invest->id,
+                'complete'
+            );
+        }
+
+        $redirectUrl = $this->getRedirectUrl('dashboard', 'wallet');
+        if ($invest->getProject()) {
+            $redirectUrl = $this->getRedirectUrl('project', $metadata['project']);
+        }
 
         $checkout = $this->stripe->checkout->sessions->create([
             'customer' => $customer,
-            'success_url' => $successUrl,
-            'cancel_url' => $this->getRedirectUrl('project', $project->id),
+            'success_url' => sprintf('%s?session_id={CHECKOUT_SESSION_ID}', $successUrl),
+            'cancel_url' => $redirectUrl,
             'mode' => CheckoutSession::MODE_SUBSCRIPTION,
             'line_items' => [
                 [
                     'price' => $this->stripe->prices->create([
                         'unit_amount' => $invest->amount * 100,
-                        'currency' => $project->currency,
+                        'currency' => $this->getStripeCurrency($invest, $user),
                         'recurring' => ['interval' => 'month'],
                         'product' => $this->getStripeProduct($invest)->id,
                         'metadata' => $metadata
@@ -94,15 +102,25 @@ class SubscriptionRequest extends AbstractRequest
             return new SubscriptionResponse($this, $checkout, $subscription);
         }
 
-        $donationCheckout = $this->stripe->checkout->sessions->create([
-            'customer' => $this->getStripeCustomer(User::get($metadata['user']))->id,
-            'success_url' => sprintf('%s?session_id={CHECKOUT_SESSION_ID}', $this->getRedirectUrl(
+        $successUrl = $this->getRedirectUrl('pool', $metadata['invest']);
+        if ($metadata['project'] !== '') {
+            $successUrl = $this->getRedirectUrl(
                 'invest',
                 $metadata['project'],
                 $metadata['invest'],
                 'complete'
-            )),
-            'cancel_url' => $this->getRedirectUrl('project', $metadata['project']->id),
+            );
+        }
+
+        $cancelUrl = $this->getRedirectUrl('dashboard', 'wallet');
+        if ($metadata['project'] !== '') {
+            $cancelUrl = $this->getRedirectUrl('project', $metadata['project']);
+        }
+
+        $donationCheckout = $this->stripe->checkout->sessions->create([
+            'customer' => $this->getStripeCustomer(User::get($metadata['user']))->id,
+            'success_url' => sprintf('%s?session_id={CHECKOUT_SESSION_ID}', $successUrl),
+            'cancel_url' => $cancelUrl,
             'mode' => CheckoutSession::MODE_PAYMENT,
             'line_items' => [
                 [
@@ -236,5 +254,21 @@ class SubscriptionRequest extends AbstractRequest
             $invest->id,
             $user->id
         );
+    }
+
+    private function getStripeCurrency(Invest $invest, User $user): string
+    {
+        if ($project = $invest->getProject()) {
+            return $project->currency;
+        }
+
+        /** @var stdClass */
+        $preferences = User::getPreferences($user);
+
+        if (\property_exists($preferences, 'currency')) {
+            return $preferences->currency;
+        }
+
+        return Config::get('currency');
     }
 }
