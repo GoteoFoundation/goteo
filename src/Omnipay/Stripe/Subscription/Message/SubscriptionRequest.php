@@ -38,15 +38,12 @@ class SubscriptionRequest extends AbstractRequest
         $user = $data['user'];
         $invest = $data['invest'];
 
-        /** @var Project */
-        $project = $invest->getProject();
-
         $customer = $this->getStripeCustomer($user)->id;
-        $metadata = $this->getMetadata($project, $invest, $user);
+        $metadata = $this->getMetadata($invest);
 
         $successUrl = sprintf('%s?session_id={CHECKOUT_SESSION_ID}', $this->getRedirectUrl(
             'invest',
-            $project->id,
+            $metadata['project'],
             $invest->id,
             'complete'
         ));
@@ -166,27 +163,21 @@ class SubscriptionRequest extends AbstractRequest
 
     private function getStripeProduct(Invest $invest): Product
     {
-        /** @var User */
-        $user = $invest->getUser();
-
-        /** @var Project */
-        $project = $invest->getProject();
-
-        $productId = sprintf(
-            '%s_%s_%s',
-            $project->id,
-            $this->getInvestReward($invest, 'noreward'),
-            $user->id,
-        );
+        $productId = $this->getProductId($invest);
 
         try {
             return $this->stripe->products->retrieve($productId);
         } catch (\Stripe\Exception\InvalidRequestException $e) {
-            $productDescription = sprintf(
-                '%s - %s',
-                $project->name,
-                $this->getInvestReward($invest, Text::get('invest-resign'))
-            );
+            if ($project = $invest->getProject()) {
+                $productDescription = sprintf(
+                    '%s - %s',
+                    $project->name,
+                    $this->getInvestReward($invest, Text::get('invest-resign'))
+                );
+            } else {
+                $productDescription = Text::get('invest-pool-method');
+            }
+
 
             return $this->stripe->products->create([
                 'id' => $productId,
@@ -196,14 +187,54 @@ class SubscriptionRequest extends AbstractRequest
         }
     }
 
-    private function getMetadata(Project $project, Invest $invest, User $user): array
+    private function getMetadata(Invest $invest): array
     {
+        /** @var Project */
+        $project = $invest->getProject();
+        /** @var User */
+        $user = $invest->getUser();
+
+        $projectId = ($project) ? $project->id : null;
+
         return [
             'donate_amount' => $invest->donate_amount,
-            'project' => $project->id,
+            'project' => $projectId,
             'invest' => $invest->id,
             'reward' => $this->getInvestReward($invest, ''),
             'user' => $user->id,
         ];
+    }
+
+    private function getProductId(Invest $invest): string
+    {
+        if ($project = $invest->getProject())
+            return $this->getProductWithProjectId($invest, $project);
+
+        return $this->getProductWithoutProjectId($invest);
+    }
+
+    private function getProductWithProjectId(Invest $invest, Project $project): string
+    {
+        /** @var User */
+        $user = $invest->getUser();
+
+        return sprintf(
+            '%s_%s_%s',
+            $project->id,
+            $this->getInvestReward($invest, 'noreward'),
+            $user->id,
+        );
+    }
+
+    private function getProductWithoutProjectId(Invest $invest): string
+    {
+        /** @var User */
+        $user = $invest->getUser();
+
+        return sprintf(
+            '%s_%s',
+            $invest->id,
+            $user->id
+        );
     }
 }

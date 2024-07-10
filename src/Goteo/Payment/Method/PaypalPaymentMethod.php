@@ -28,8 +28,12 @@ class PaypalPaymentMethod extends AbstractPaymentMethod
         /** @var ExpressGateway */
         $gateway = $this->getGateway();
         $invest = $this->getInvest();
-        $project = Project::get($invest->project);
-        $transactionId = sprintf("%s-%s", $project->getNumericId(), $invest->id);
+
+        $transactionId = sprintf("0000000000-%s", $invest->id);
+        if ($invest->project) {
+            $project = Project::get($invest->project);
+            $transactionId = sprintf("%s-%s", $project->getNumericId(), $invest->id);
+        }
 
         $invest->setPreapproval($transactionId);
 
