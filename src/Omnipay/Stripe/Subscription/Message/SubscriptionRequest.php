@@ -48,16 +48,21 @@ class SubscriptionRequest extends AbstractRequest
             'complete'
         ));
 
+        $redirectUrl = $this->getRedirectUrl('dashboard', 'wallet');
+        if ($invest->getProject()) {
+            $redirectUrl = $this->getRedirectUrl('project', $metadata['project']);
+        }
+
         $checkout = $this->stripe->checkout->sessions->create([
             'customer' => $customer,
             'success_url' => $successUrl,
-            'cancel_url' => $this->getRedirectUrl('project', $project->id),
+            'cancel_url' => $redirectUrl,
             'mode' => CheckoutSession::MODE_SUBSCRIPTION,
             'line_items' => [
                 [
                     'price' => $this->stripe->prices->create([
                         'unit_amount' => $invest->amount * 100,
-                        'currency' => $project->currency,
+                        'currency' => $this->getStripeCurrency($invest, $user),
                         'recurring' => ['interval' => 'month'],
                         'product' => $this->getStripeProduct($invest)->id,
                         'metadata' => $metadata
@@ -236,5 +241,21 @@ class SubscriptionRequest extends AbstractRequest
             $invest->id,
             $user->id
         );
+    }
+
+    private function getStripeCurrency(Invest $invest, User $user): string
+    {
+        if ($project = $invest->getProject()) {
+            return $project->currency;
+        }
+
+        /** @var stdClass */
+        $preferences = User::getPreferences($user);
+
+        if (\property_exists($preferences, 'currency')) {
+            return $preferences->currency;
+        }
+
+        return Config::get('currency');
     }
 }
