@@ -27,7 +27,7 @@ class NodeProject extends Model {
     /**
      * @return NodeProject[]
      */
-    static public function getList(array $filters = [], int $offset = 0, int $limit = 10, bool $count = false, string $lang = null): array
+    static public function getList(array $filters = [], int $offset = 0, int $limit = 10, bool $count = false, string $lang = null)
     {
         $filter = [];
         $values = [];
