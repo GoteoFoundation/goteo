@@ -12,7 +12,7 @@ namespace Goteo\Repository;
 
 use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Entity\Announcement;
+use Goteo\Model\Announcement;
 use Goteo\Model\Project;
 use PDO;
 use PDOException;
@@ -72,7 +72,7 @@ class AnnouncementRepository extends BaseRepository
 
     public function persist(Announcement $announcement, array &$errors = []): Announcement
     {
-        if ($announcement->getId())
+        if ($announcement->id)
             return $this->update($announcement, $errors);
 
         return $this->create($announcement, $errors);
@@ -91,26 +91,26 @@ class AnnouncementRepository extends BaseRepository
             'active' => ':active'
         ];
 
-        $project = $announcement->getProject();
+        $project = $announcement->project;
         if ($project instanceof Project)
             $project = $project->id;
 
         $values = [
-            ':title' => $announcement->getTitle(),
-            ':description' => $announcement->getDescription(),
-            ':type' => $announcement->getType(),
-            ':lang' => $announcement->getLang(),
+            ':title' => $announcement->title,
+            ':description' => $announcement->description,
+            ':type' => $announcement->type,
+            ':lang' => $announcement->lang,
             ':project_id' => $project,
-            ':cta_url' => $announcement->getCtaUrl(),
-            ':cta_text' => $announcement->getCtaText(),
-            ':active' => $announcement->isActive(),
+            ':cta_url' => $announcement->cta_url,
+            ':cta_text' => $announcement->cta_text,
+            ':active' => $announcement->active
         ];
 
         $sql = "INSERT INTO `$this->table` (" . implode(',', array_keys($fields)) . ") VALUES (" . implode(',', array_values($fields)) . ")";
 
         try {
             $this->query($sql, $values);
-            $announcement->setId($this->insertId());
+            $announcement->id = $this->insertId();
         } catch (PDOException $e) {
             $errors[] = $e->getMessage();
             throw new ModelException($e->getMessage());
@@ -133,21 +133,21 @@ class AnnouncementRepository extends BaseRepository
             'active' => ':active'
         ];
 
-        $project = $announcement->getProject();
+        $project = $announcement->project;
         if ($project instanceof Project)
             $project = $project->id;
 
 
         $values = [
-            ':id' => $announcement->getId(),
-            ':title' => $announcement->getTitle(),
-            ':description' => $announcement->getDescription(),
-            'type' => $announcement->getType(),
-            ':lang' => $announcement->getLang(),
+            ':id' => $announcement->id,
+            ':title' => $announcement->title,
+            ':description' => $announcement->description,
+            'type' => $announcement->type,
+            ':lang' => $announcement->lang,
             ':project_id' => $project,
-            ':cta_url' => $announcement->getCtaUrl(),
-            ':cta_text' => $announcement->getCtaText(),
-            ':active' => $announcement->isActive(),
+            ':cta_url' => $announcement->cta_url,
+            ':cta_text' => $announcement->cta_text,
+            ':active' => $announcement->active,
         ];
 
         $sql = "REPLACE INTO `$this->table` (" . implode(',', array_keys($fields)) . ") VALUES (" . implode(',', array_values($fields)) . ")";
@@ -164,7 +164,7 @@ class AnnouncementRepository extends BaseRepository
     {
         $sql = "DELETE FROM $this->table WHERE $this->table.id = :id";
         try {
-            $this->query($sql, [':id' => $announcement->getId()]);
+            $this->query($sql, [':id' => $announcement->id]);
         } catch (PDOException $exception) {
             throw new ModelException($exception->getMessage());
         }
