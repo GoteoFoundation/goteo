@@ -24,6 +24,23 @@ for the JavaScript code in this page.
 */
 
 $(function() {
+    const $closeAnnouncement = document.getElementById('announcement-close');
+    const $announcements = $closeAnnouncement.parentNode;
+    const announcementsId = $announcements.id;
+    const date = new Date();
+    const today = `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`;
+    const itemId = `announcementDismissed_${today}_${announcementsId}`;
+
+    $closeAnnouncement.addEventListener("click", (event) => {
+        $announcements.style.display = 'none';
+        localStorage.setItem(itemId, true);
+    });
+
+
+
+    if (localStorage.getItem(itemId))
+        $announcements.style.display = 'none';
+
     $(".slider-announcements").slick({
         dots: false,
         infinite: true,

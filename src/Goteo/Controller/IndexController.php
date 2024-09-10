@@ -60,6 +60,7 @@ class IndexController extends DiscoverController
         $announcementRepository = new AnnouncementRepository();
         $announcementList = $announcementRepository->getActiveList();
 
+
         return $this->viewResponse('home/index', [
             'banners'   => $banners,
             'projects'  => $projects,

@@ -1,3 +1,3 @@
 <?php $announcement = $this->announcement; ?>
 
-<a href="<?= $announcement->getCtaUrl() ?>" class="btn btn-white btn-lg btn-block"><?= $announcement->getCtaText()?></a>
+<a href="<?= $announcement->cta_url ?>" class="btn btn-white btn-lg btn-block"><?= $announcement->cta_text ?></a>
