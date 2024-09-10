@@ -60,12 +60,12 @@ class AnnouncementApiController extends AbstractApiController
                 throw new ControllerAccessDeniedException();
 
             $value = $request->request->getBoolean('value');
-            $announcement->setActive($value);
+            $announcement->active = $value;
 
             $errors = [];
             $this->announcementRepository->persist($announcement, $errors);
 
-            $result['value'] = $announcement->isActive();
+            $result['value'] = $announcement->active;
 
             if ($errors = Message::getErrors()) {
                 $result['error'] = true;

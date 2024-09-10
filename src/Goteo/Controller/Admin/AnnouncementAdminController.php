@@ -17,7 +17,7 @@ use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\Exception\ModelNotFoundException;
-use Goteo\Entity\Announcement;
+use Goteo\Model\Announcement;
 use Goteo\Library\Text;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Forms\Model\AnnouncementForm;
@@ -69,6 +69,7 @@ class AnnouncementAdminController extends AbstractAdminController
         $count = $this->announcementRepository->count();
         $announcements = $this->announcementRepository->getList(0, $count);
 
+
         return $this->viewResponse('admin/announcements/list', [
             'list' => $announcements,
             'total' => $count,
@@ -87,7 +88,7 @@ class AnnouncementAdminController extends AbstractAdminController
 
         $defaults = [];
 
-        $processor = $this->getEntityForm(AnnouncementForm::class, $announcement, $defaults, [], $request);
+        $processor = $this->getModelForm(AnnouncementForm::class, $announcement, $defaults, [], $request);
         $processor->createForm();
 
         $form = $processor->getForm();

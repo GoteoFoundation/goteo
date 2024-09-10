@@ -10,29 +10,25 @@
 
 namespace Goteo\Util\ModelNormalizer\Transformer;
 
-use Goteo\Library\Text;
+use Goteo\Model\Announcement;
 
-class AnnouncementTransformer extends EntityTransformer
+class AnnouncementTransformer extends AbstractTransformer
 {
 
     protected $keys = ['id', 'title', 'description'];
 
-    public function getId()
-    {
-        return $this->model->getId();
-    }
-
     public function getActions()
     {
-        $entity = $this->getModel();
+        /** @var Announcement */
+        $model = $this->model;
 
         if (!$this->getUser()) return [];
 
-        $id = $this->model->getId();
+        $id = $model->id;
         $ret = [
             'edit' => "/admin/announcement/edit/$id",
             'translate' => "/translate/announcement/$id",
-            'delete' => "/admin/announcement/delete/$id"
+            'delete' => "/admin/announcement/delete/$id",
         ];
 
         return $ret;

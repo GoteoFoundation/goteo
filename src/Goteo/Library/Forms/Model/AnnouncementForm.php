@@ -12,10 +12,10 @@
 namespace Goteo\Library\Forms\Model;
 
 use Goteo\Application\Session;
-use Goteo\Entity\Announcement;
-use Goteo\Library\Forms\EntityFormProcessor;
+use Goteo\Library\Forms\AbstractFormProcessor;
 use Goteo\Library\Forms\FormModelException;
 use Goteo\Library\Text;
+use Goteo\Model\Announcement;
 use Goteo\Repository\AnnouncementRepository;
 use Goteo\Util\Form\Type\BooleanType;
 use Goteo\Util\Form\Type\ChoiceType;
@@ -26,20 +26,20 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
 
 
-class AnnouncementForm extends EntityFormProcessor
+class AnnouncementForm extends AbstractFormProcessor
 {
 
     public function createForm(): AnnouncementForm
     {
         /** @var Announcement $announcement */
-        $announcement = $this->getEntity();
+        $announcement = $this->getModel();
         $builder = $this->getBuilder();
 
         $builder
             ->add('title', TextType::class, [
                 'label' => 'regular-title',
                 'required' => true,
-                'data' => $announcement->getTitle(),
+                'data' => $announcement->title,
                 'constraints' => [
                     new Constraints\NotBlank(),
                 ],
@@ -47,32 +47,31 @@ class AnnouncementForm extends EntityFormProcessor
             ->add('description', TextType::class, [
                 'label' => 'regular-description',
                 'required' => true,
-                'data' => $announcement->getDescription(),
+                'data' => $announcement->description,
                 'constraints' => [
                     new Constraints\NotBlank(),
                 ]
             ])
             ->add('type', ChoiceType::class, [
-
                 'label' => 'regular-type',
                 'required' => true,
-                'data' => $announcement->getType(),
+                'data' => $announcement->type,
                 'choices' => $this->getAnnouncementTypes()
             ])
             ->add('cta_url', UrlType::class, [
                 'label' => 'regular-cta',
                 'required' => false,
-                'data' => $announcement->getCtaUrl()
+                'data' => $announcement->cta_url,
             ])
             ->add('cta_text', TextType::class, [
                 'label' => 'regular-cta-text',
                 'required' => false,
-                'data' => $announcement->getCtaText()
+                'data' => $announcement->cta_text
             ])
             ->add('active', BooleanType::class, [
                 'label' => 'regular-active',
                 'required' => false,
-                'data' => $announcement->isActive(),
+                'data' => $announcement->active
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'regular-submit',
@@ -91,18 +90,18 @@ class AnnouncementForm extends EntityFormProcessor
         $data = $form->getData();
 
         /** @var Announcement $announcement */
-        $announcement = $this->getEntity();
+        $announcement = $this->getModel();
 
-        $announcement->setTitle($data['title']);
-        $announcement->setDescription($data['description']);
-        $announcement->setActive($data['active']);
-        $announcement->setLang(Session::get('lang'));
+        $announcement->title = $data['title'];
+        $announcement->description = $data['description'];
+        $announcement->active = $data['active'];
+        $announcement->lang = Session::get('lang');
+
         if (isset($data['cta_url']))
-            $announcement->setCtaUrl($data['cta_url']);
+            $announcement->cta_url = $data['cta_url'];
 
         if (isset($data['cta_text']))
-            $announcement->setCtaText($data['cta_text']);
-
+            $announcement->cta_text = $data['cta_text'];
 
         $announcementRepository = new AnnouncementRepository();
 

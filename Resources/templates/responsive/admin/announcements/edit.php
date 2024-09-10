@@ -11,7 +11,7 @@ $this->section('admin-search-box-addons');
 <?php $this->section('admin-container-body') ?>
 
 <?php
-$id = $this->announcement->getId();
+$id = $this->announcement->id;
 ?>
 
 <h4 class="title"><?= $id ? $this->text('admin-announcement-edit', "#{$id}") : $this->text('admin-announcement-add') ?></h4>
