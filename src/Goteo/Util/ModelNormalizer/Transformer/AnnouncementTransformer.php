@@ -10,12 +10,21 @@
 
 namespace Goteo\Util\ModelNormalizer\Transformer;
 
+use Goteo\Library\Text;
 use Goteo\Model\Announcement;
 
 class AnnouncementTransformer extends AbstractTransformer
 {
 
-    protected $keys = ['id', 'title', 'description'];
+    protected $keys = ['id', 'title', 'description', 'type'];
+
+    public function getType(): string
+    {
+        /** @var Announcement */
+        $model = $this->model;
+        $type = $model->type;
+        return Text::get("admin-announcements-type-$type");
+    }
 
     public function getActions()
     {

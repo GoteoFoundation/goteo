@@ -70,6 +70,17 @@ class AnnouncementRepository extends BaseRepository
         return $this->query($sql)->fetchAll(PDO::FETCH_CLASS, Announcement::class);
     }
 
+    public function getActiveWithoutDonationList(int $offset = 0, int $limit = 10): array
+    {
+        $sql = "SELECT announcement.*
+                FROM announcement
+                WHERE active and type != ?
+                LIMIT $limit
+                OFFSET $offset";
+
+        return $this->query($sql, [Announcement::TYPE_DONATION])->fetchAll(PDO::FETCH_CLASS, Announcement::class);
+    }
+
     public function persist(Announcement $announcement, array &$errors = []): Announcement
     {
         if ($announcement->id)

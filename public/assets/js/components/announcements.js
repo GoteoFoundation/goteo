@@ -46,7 +46,7 @@ $(function() {
         infinite: true,
         autoplay: false,
         autoplaySpeed: 7000,
-        speed: 1500,
+        speed: 500,
         fade: true,
         cssEase: "linear",
     });
