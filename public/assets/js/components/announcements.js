@@ -36,10 +36,8 @@ $(function() {
         localStorage.setItem(itemId, true);
     });
 
-
-
-    if (localStorage.getItem(itemId))
-        $announcements.style.display = 'none';
+    if (!localStorage.getItem(itemId))
+        $announcements.style.display = 'block';
 
     $(".slider-announcements").slick({
         dots: false,
@@ -49,5 +47,14 @@ $(function() {
         speed: 500,
         fade: true,
         cssEase: "linear",
+        responsive: [
+            {
+                breakpoint: 500,
+                settings: {
+                    dots: true,
+                    arrows: false
+                }
+            }
+        ]
     });
 });
