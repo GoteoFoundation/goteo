@@ -9,7 +9,6 @@
  */
 namespace Goteo\Util\ModelNormalizer;
 
-use Goteo\Entity\Announcement;
 use Goteo\Util\ModelNormalizer\Transformer;
 use Goteo\Application\Session;
 /**
@@ -29,10 +28,6 @@ class EntityNormalizer {
      * @return Goteo\Util\ModelNormalizer\TransformerInterface
      */
     public function get() {
-        if ($this->model instanceOf Announcement) {
-            $ob = new Transformer\AnnouncementTransformer($this->model, $this->keys);
-        }
-
         $ob->setUser(Session::getUser())->rebuild();
 
         return $ob;
