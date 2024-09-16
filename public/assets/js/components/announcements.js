@@ -29,7 +29,7 @@ $(function() {
     const announcementsId = $announcements.id;
     const date = new Date();
     const today = `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`;
-    const itemId = `announcementDismissed_${today}_${announcementsId}`;
+    const itemId = `goteo_announcements_${today}_${announcementsId}`;
 
     $closeAnnouncement.addEventListener("click", (event) => {
         $announcements.style.display = 'none';
