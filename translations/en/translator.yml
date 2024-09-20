@@ -30,6 +30,8 @@ translator-field-title: Title
 translator-field-subtitle: Subtitle
 translator-field-twitter_msg: 'Twitter message'
 translator-field-twitter_msg_owner: 'Twitter author'
+translator-field-cta_url: 'Call To Action Url'
+translator-field-cta_text: 'Call To Action'
 translator-glossary: 'Glossary of terms'
 translator-home: Home
 translator-icon: 'Types of return/reward'

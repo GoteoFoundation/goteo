@@ -252,6 +252,10 @@ admin-module-communication: # Can access to module CommunicationAdminController
     model: null
     relational: null
 
+admin-module-announcements: # Can access to module AnnouncementAdminController
+    model: null
+    relational: null
+
 receive-test-communications: # Can receive test communications
     model: null
     relational: null
