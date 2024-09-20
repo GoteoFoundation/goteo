@@ -10,6 +10,7 @@ accounts-lb-move: 'Reubicando el aporte'
 accounts-lb-report: 'Informe de proyecto'
 accounts-lb-update: 'Cambiando el estado al aporte'
 accounts-lb-viewer: 'Viendo logs'
+announcement-lb: 'Anuncios'
 banners-lb: Banner
 banners-lb-add: 'Nuevo Banner'
 banners-lb-cancel: 'Cancelando aporte'

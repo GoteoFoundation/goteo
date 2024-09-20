@@ -1,0 +1,45 @@
+.announcement {
+  background-color: $background-dark-lilac;
+  color: $color-white;
+  display: none;
+
+  h1 {
+    text-wrap: pretty;
+  }
+
+  p {
+    text-wrap: balance;
+  }
+
+  button.close {
+    position: relative;
+    top: 1em;
+    right: 1em;
+    z-index: 1;
+    opacity: 0.8;
+    color: $color-white;
+  }
+
+  .container {
+    margin-top: 1em;
+    margin-bottom: 1em;
+
+    .row {
+      display: flex;
+
+      @media (max-width: $breakpoint-sm) {
+        display: block;
+      }
+    }
+
+    .cta {
+      margin: auto;
+    }
+
+    .grid-donation {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1em
+    }
+  }
+}
