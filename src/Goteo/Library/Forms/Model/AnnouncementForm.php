@@ -62,11 +62,13 @@ class AnnouncementForm extends AbstractFormProcessor
                 'label' => 'regular-cta',
                 'required' => false,
                 'data' => $announcement->cta_url,
+                'attr' => ['help' => Text::get('admin-announcement-cta-text')]
             ])
             ->add('cta_text', TextType::class, [
                 'label' => 'regular-cta-text',
                 'required' => false,
-                'data' => $announcement->cta_text
+                'data' => $announcement->cta_text,
+                'attr' => ['help' => Text::get('admin-announcement-cta-text')]
             ])
             ->add('active', BooleanType::class, [
                 'label' => 'regular-active',
@@ -95,6 +97,7 @@ class AnnouncementForm extends AbstractFormProcessor
         $announcement->title = $data['title'];
         $announcement->description = $data['description'];
         $announcement->active = $data['active'];
+        $announcement->type = $data['type'];
         $announcement->lang = Session::get('lang');
 
         if (isset($data['cta_url']))
