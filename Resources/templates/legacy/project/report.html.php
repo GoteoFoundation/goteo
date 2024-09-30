@@ -333,5 +333,7 @@ $cName = "P-{$cNum}-{$cDate}";
         <br />
     <?php endif; ?>
 
+    <?= Goteo\Core\View::get('project/report_table.html.php',  $vars) ?>
+
 
 </div>
