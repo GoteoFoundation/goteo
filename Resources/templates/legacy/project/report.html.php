@@ -5,7 +5,7 @@ use Goteo\Model\Invest;
 
 $project = $vars['project'];
 $account = $vars['account']; // cuentas del proyecto, para tener el porcentaje de comisión
-
+$contract = $vars['contract'];
 
 $dated = $vars['dated'];
 
@@ -263,20 +263,20 @@ $cName = "P-{$cNum}-{$cDate}";
     </table>
 
     <?php if ($admin) : ?>
+        <br />
         <table>
             <tr>
-                <th style="text-align:left;">Desglose informativo de lo pagado mediante PayPal</th>
+                <th style="text-align: left;">Números de seguimiento relevantes</th>
             </tr>
             <tr>
-                <td>- Cantidad transferida: <?php echo \amount_format($sumData['pp_project'], 2) ?></td>
+                <td>- Número de contrato: P<?= $contract->number ?></td>
             </tr>
             <tr>
-                <td>- Comisión aproximada cobrada al impulor: <?php echo \amount_format($sumData['pp_fee_project'], 2) ?></td>
-            </tr>
-            <tr>
-                <td>- Cantidad aproximada recibida por el impulsor: <?php echo \amount_format($sumData['pp_net_project'], 2) ?></td>
+                <td>- Número de seguimiento: <?= $project->getNumericId() ?></td>
             </tr>
         </table>
+        <br />
+        <?= Goteo\Core\View::get('project/report_table.html.php',  $vars) ?>
         <br />
     <?php endif; ?>
 
@@ -332,8 +332,4 @@ $cName = "P-{$cNum}-{$cDate}";
         </table>
         <br />
     <?php endif; ?>
-
-    <?= Goteo\Core\View::get('project/report_table.html.php',  $vars) ?>
-
-
 </div>

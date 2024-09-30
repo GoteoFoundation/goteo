@@ -2,7 +2,13 @@
 
 <?php $this->section('admin-project-content') ?>
 
-<?= Goteo\Core\View::get('project/report.html.php',  array('project' => $this->project, 'account' => $this->account, 'Data' => $this->data, 'admin'=>true)) ?>
+<?= Goteo\Core\View::get('project/report.html.php',  [
+    'project' => $this->project,
+    'account' => $this->account,
+    'contract' => $this->contract,
+    'Data' => $this->data,
+    'admin' => true
+]) ?>
 
 <?php $this->replace() ?>
 
