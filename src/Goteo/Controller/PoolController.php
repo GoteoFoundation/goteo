@@ -18,17 +18,21 @@ use Goteo\Application\Currency;
 use Goteo\Application\Event\FilterInvestFinishEvent;
 use Goteo\Application\Event\FilterInvestInitEvent;
 use Goteo\Application\Event\FilterInvestRequestEvent;
+use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Core\Controller;
+use Goteo\Library\Forms\Model\InvestAddressForm;
 use Goteo\Library\Text;
 use Goteo\Model\Invest;
+use Goteo\Model\Invest\InvestAddress;
 use Goteo\Model\Project;
 use Goteo\Model\User;
 use Goteo\Model\User\Donor;
 use Goteo\Payment\Payment;
 use Goteo\Payment\PaymentException;
+use Goteo\Repository\Invest\AddressRepository;
 use Omnipay\Common\Message\ResponseInterface;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
@@ -349,6 +353,22 @@ class PoolController extends Controller {
         // check post data
         $invest_address = (array)$invest->getAddress();
 
+        try {
+            $investAddress = InvestAddress::getByInvest($invest->id);
+        } catch (ModelNotFoundException $e) {
+
+            $investAddress = new InvestAddress();
+            $address = $invest->getAddress();
+            $investAddress
+                ->setInvest($invest->id)
+                ->setName($address->name)
+                ->setNif($address->nif)
+                ->setAddress($address->address)
+                ->setLocation($address->location)
+                ->setZipcode($address->zipcode)
+                ->setCountry($address->country);
+        }
+
         $errors = [];
         if($request->isMethod('post')) {
             return $this->dispatch(
@@ -357,6 +377,11 @@ class PoolController extends Controller {
             )->getHttpResponse();
         }
 
+        $processor = $this->getModelForm(InvestAddressForm::class, $investAddress, (array)$investAddress, [], $request);
+        $processor->createForm();
+        $processor->getBuilder();
+        $form = $processor->getForm();
+        $form->handleRequest($request);
         return $this->viewResponse('pool/user_data', [
             'type' => $type,
             'invest' => $invest,
@@ -364,7 +389,8 @@ class PoolController extends Controller {
             'invest_errors' => $errors,
             'step' => 3,
             'legal_entities' => Donor::getLegalEntities(),
-            'legal_documents' => Donor::getLegalDocumentTypes()
+            'legal_documents' => Donor::getLegalDocumentTypes(),
+            'form' => $form->createView()
         ]);
     }
 
