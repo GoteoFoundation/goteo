@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 export UID=`id -u`
 
 DOCKER_FILE=
