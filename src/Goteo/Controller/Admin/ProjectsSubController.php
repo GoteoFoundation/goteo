@@ -207,12 +207,14 @@ class ProjectsSubController extends AbstractSubController {
         $data = Model\Invest::getReportData($project->id, $project->status, $project->round, $project->passed);
         $account = Model\Project\Account::get($project->id);
         $contract = Model\Contract::get($project->id);
+        $invests = Model\Invest::getAll($project->id);
 
         return array(
                 'template' => 'admin/projects/report',
                 'project' => $project,
                 'account' => $account,
                 'contract' => $contract,
+                'invests' => $invests,
                 'data' => $data
         );
     }
