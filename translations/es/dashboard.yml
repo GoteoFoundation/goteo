@@ -73,7 +73,7 @@ dashboard-menu-profile-personal: 'Datos personales'
 dashboard-menu-profile-preferences: 'Mis preferencias'
 dashboard-menu-profile-profile: 'Editar perfil'
 dashboard-menu-profile-public: 'Perfil público'
-dashboard-menu-project-nid: 'Identificador numérico de proyecto'
+dashboard-menu-project-nid: 'Número de seguimiento'
 dashboard-menu-projects: 'Mis proyectos'
 dashboard-menu-projects-analytics: Analítica
 dashboard-menu-projects-commons: Retornos
