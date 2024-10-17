@@ -276,7 +276,7 @@ $cName = "P-{$cNum}-{$cDate}";
             </tr>
         </table>
         <br />
-        <?= Goteo\Core\View::get('project/report_table.html.php',  $vars) ?>
+        <?= Goteo\Core\View::get('project/invests_table.html.php',  $vars) ?>
         <br />
     <?php endif; ?>
 

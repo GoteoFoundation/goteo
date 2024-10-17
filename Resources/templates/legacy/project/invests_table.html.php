@@ -8,25 +8,53 @@ if (!$account->vat) {
 
 $projectFee = round($account->fee / 100, 2);
 
-$tpvTotal = $vars['Data']['tpv']['total']['amount'];
+function countTotal($invests, $method)
+{
+    $count = 0;
+
+    foreach ($invests as $invest) {
+        if ($invest->status < 1) continue;
+        if ($invest->method !== $method) continue;
+
+        $total = $count + 1;
+    }
+
+    return $total;
+}
+
+function calcTotal($invests, $method)
+{
+    $total = 0;
+
+    foreach ($invests as $invest) {
+        if ($invest->status < 1) continue;
+        if ($invest->method !== $method) continue;
+
+        $total = $total + $invest->amount;
+    }
+
+    return $total;
+}
+
+$tpvTotal = calcTotal($vars['invests'], 'tpv');
 $tpvProjectFee = $tpvTotal * $projectFee;
 $tpvProjectVat = $tpvProjectFee * 0.21;
 $tpvGatewayFee = $tpvTotal  * 0.008;
 $tpvGatewayVat = 0;
 
-$paypalTotal = $vars['Data']['paypal']['total']['amount'];
+$paypalTotal = calcTotal($vars['invests'], 'paypal');
 $paypalProjectFee = $paypalTotal * $projectFee;
 $paypalProjectVat = $paypalProjectFee * 0.21;
-$paypalGatewayFee = ($paypalTotal * 0.034) + ($vars['Data']['paypal']['total']['invests'] * 0.35);
+$paypalGatewayFee = ($paypalTotal * 0.034) + (countTotal($vars['invests'], 'paypal') * 0.35);
 $paypalGatewayVat = 0;
 
-$poolTotal = $vars['Data']['pool']['total']['amount'];
+$poolTotal = calcTotal($vars['invests'], 'pool');
 $poolProjectFee = $poolTotal * $projectFee;
 $poolProjectVat = $poolProjectFee * 0.21;
 $poolGatewayFee = $poolTotal * 0.02;
 $poolGatewayVat = $poolGatewayFee * 0.21;
 
-$cashTotal = $vars['Data']['cash']['total']['amount'];
+$cashTotal = calcTotal($vars['invests'], 'cash');
 $cashProjectFee = $cashTotal * $projectFee;
 $cashProjectVat = $cashProjectFee * 0.21;
 $cashGatewayFee = $cashTotal * 0.02;
@@ -50,7 +78,7 @@ $reportData = [
         'base' => \amount_format($paypalTotal, 2),
         'project_fee' => sprintf("%s (%s%%)", \amount_format($paypalProjectFee, 2), $account->fee),
         'project_vat' => sprintf("%s (21%%)", \amount_format($paypalProjectVat, 2)),
-        'gateway_fee' => sprintf("%s (3,4%% + 0,35 * trx)", \amount_format($paypalGatewayFee, 2)),
+        'gateway_fee' => sprintf("%s (3,4%% + 0,35 * trxs)", \amount_format($paypalGatewayFee, 2)),
         'gateway_vat' => sprintf("%s (21%%)", \amount_format($paypalGatewayVat, 2))
     ],
     'MONEDERO' => [
