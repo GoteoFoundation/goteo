@@ -6,6 +6,7 @@
     'project' => $this->project,
     'account' => $this->account,
     'contract' => $this->contract,
+    'invests' => $this->invests,
     'Data' => $this->data,
     'admin' => true
 ]) ?>
