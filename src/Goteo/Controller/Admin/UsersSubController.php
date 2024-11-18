@@ -69,6 +69,7 @@ class UsersSubController extends AbstractSubController {
     static public function isAllowed(User $user, $node): bool {
         // Only central node or superadmins allowed here
         if( ! (Config::isMasterNode($node) || $user->hasRoleInNode($node, ['superadmin', 'root'])) ) return false;
+        if ($user->hasPerm('admin-module-users')) return true;
         return parent::isAllowed($user, $node);
     }
 

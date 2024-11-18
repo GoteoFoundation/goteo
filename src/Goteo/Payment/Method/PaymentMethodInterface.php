@@ -127,4 +127,9 @@ interface PaymentMethodInterface {
      * (pool)
      */
     public function isInternal(): bool;
+
+    /**
+     * Subscription payments are charged recurrently
+     */
+    public function isSubscription(): bool;
 }

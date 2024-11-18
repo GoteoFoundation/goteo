@@ -34,4 +34,13 @@ class InvestRepository extends BaseRepository
 
         return $this->query($sql, [$payment])->fetchAll(\PDO::FETCH_CLASS, Invest::class);
     }
+
+    public function getListByTransaction(string $transaction): array
+    {
+        $sql = "SELECT *
+                FROM invest
+                WHERE invest.transaction = ?";
+
+        return $this->query($sql, [$transaction])->fetchAll(\PDO::FETCH_CLASS, Invest::class);
+    }
 }

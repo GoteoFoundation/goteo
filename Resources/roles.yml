@@ -72,6 +72,13 @@ stats:
         - admin-module-stats # Can access to stats
     level: 40
 
+helper:
+    extends: user
+    perms:
+        - admin-module-users
+        - admin-module-account
+    level: 40
+
 manager:
     extends: user
     perms:
@@ -81,6 +88,7 @@ manager:
         - edit-published-calls # Edit any published call
         - admin-module-blog # create/edit/delete non-project posts
         - admin-module-stories # create/edit/delete non-project posts
+        - admin-module-faqs # create/edit/delete faqs
         - full-html-edit # Affects if the user is allowed dangerous tags (iframe,...) in posts
         - admin-module-stats # Can access to stats
     level: 50

@@ -43,7 +43,9 @@ criteria-lb-edit: 'Editant Criteri'
 criteria-lb-translate: 'Traduint Criteri'
 faq-lb-add: 'Nova Pregunta'
 faq-lb-edit: 'Editant Pregunta'
-faq-lb-translate: 'Tradunt Pregunta'
+faq-lb-translate: 'Traduint Pregunta'
+faqsection-lb: "Seccions de les FAQs"
+faqsubsection-lb: "Subseccions de les FAQs"
 filter-lb: 'Filtres'
 glossary-lb: Glossari
 impactdata-lb: "Dades d'impacte"

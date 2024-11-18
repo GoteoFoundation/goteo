@@ -52,6 +52,7 @@ $this->layout('layout', [
                                 <div class="field">
                                     <label for="email"><?= $this->text('contact-email-field') ?></label><br />
                                     <input class="short" type="text" id="email" name="email" value="<?= $this->data['email'] ?>"/>
+                                    <?= $this->insert($this->honeypot->template, $this->honeypot->params) ?>
                                 </div>
                             </td>
                         </tr>

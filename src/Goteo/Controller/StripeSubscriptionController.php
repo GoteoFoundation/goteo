@@ -18,8 +18,9 @@ use Goteo\Model\Invest;
 use Goteo\Model\User;
 use Goteo\Payment\Method\StripeSubscriptionPaymentMethod;
 use Goteo\Repository\InvestRepository;
+use Stripe\Charge as StripeCharge;
 use Stripe\Event;
-use Stripe\Invoice;
+use Stripe\Invoice as StripeInvoice;
 use Stripe\StripeClient;
 use Stripe\Webhook;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -48,9 +49,9 @@ class StripeSubscriptionController extends Controller
 
         switch ($event->type) {
             case Event::TYPE_INVOICE_PAYMENT_SUCCEEDED:
-                return $this->processInvoice($event->data->object->id);
+                return $this->processInvoice($event->data->object);
             case Event::CHARGE_REFUNDED:
-                return $this->processRefund($event);
+                return $this->processRefund($event->data->object);
             default:
                 return new JsonResponse(
                     ['data' => sprintf("The event %s is not supported.", $event->type)],
@@ -60,17 +61,11 @@ class StripeSubscriptionController extends Controller
         }
     }
 
-    private function processRefund(Event $event): JsonResponse
+    private function processRefund(StripeCharge $charge): JsonResponse
     {
-        $object = $event->data->object;
-        if (!$object || !$object->invoice) {
-            return [];
-        }
+        $invoice = $this->stripe->invoices->retrieve($charge->invoice);
 
-        $invoice = $this->stripe->invoices->retrieve($object->invoice);
-        $subscription = $this->stripe->subscriptions->retrieve($invoice->subscription);
-
-        $invests = $this->investRepository->getListByPayment($subscription->id);
+        $invests = $this->investRepository->getListByTransaction($invoice->id);
         foreach ($invests as $key => $invest) {
             $invest->setStatus(Invest::STATUS_CANCELLED);
             $invest->save();
@@ -79,20 +74,21 @@ class StripeSubscriptionController extends Controller
         return new JsonResponse(['data' => $invests], Response::HTTP_OK);
     }
 
-    private function processInvoice(string $invoiceId): JsonResponse
+    private function processInvoice(StripeInvoice $invoice): JsonResponse
     {
-        $invoice = $this->stripe->invoices->retrieve($invoiceId);
-        if ($invoice->billing_reason === Invoice::BILLING_REASON_SUBSCRIPTION_CREATE) {
-            return new JsonResponse([
-                'data' => Invest::get($invoice->lines->data[0]->price->metadata->invest),
-                Response::HTTP_OK
-            ]);
-        }
-
         /** @var User */
         $user = User::getByEmail($invoice->customer_email);
-
         $subscription = $this->stripe->subscriptions->retrieve($invoice->subscription);
+
+        if ($invoice->billing_reason === StripeInvoice::BILLING_REASON_SUBSCRIPTION_CREATE) {
+            /** @var Invest */
+            $invest = Invest::get($invoice->lines->data[0]->price->metadata->invest);
+
+            $invest->setPayment($subscription->id);
+            $invest->setTransaction($invoice->id);
+
+            return new JsonResponse(['data' => $invest], Response::HTTP_OK);
+        }
 
         $invest = new Invest([
             'amount' => $invoice->amount_paid / 100,
@@ -104,7 +100,8 @@ class StripeSubscriptionController extends Controller
             'method' => StripeSubscriptionPaymentMethod::PAYMENT_METHOD_ID,
             'status' => Invest::STATUS_CHARGED,
             'invested' => date('Y-m-d'),
-            'payment' => $subscription->id
+            'payment' => $subscription->id,
+            'transaction' => $invoice->id
         ]);
 
         $errors = array();

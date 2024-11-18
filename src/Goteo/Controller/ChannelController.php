@@ -190,6 +190,9 @@ class ChannelController extends Controller {
 
         $view= $channel->type=='normal' ? 'channel/list_projects' : 'channel/'.$channel->type.'/list_projects';
 
+        $dataSetsRepository = new DataSetRepository();
+        $dataSets = $dataSetsRepository->getListByChannel([$id]);
+
         return $this->viewResponse(
             $view,
             [
@@ -198,7 +201,8 @@ class ChannelController extends Controller {
                 'title_text' => $title_text,
                 'type' => $type,
                 'total' => $total,
-                'limit' => $limit
+                'limit' => $limit,
+                'dataSets' => $dataSets
             ]
         );
     }

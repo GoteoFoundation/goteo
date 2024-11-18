@@ -19,6 +19,7 @@ use Goteo\Entity\Invest\InvestOrigin;
 use Goteo\Library\Text;
 use Goteo\Model\Invest\InvestLocation;
 use Goteo\Model\Project\Reward;
+use Goteo\Payment\Method\StripeSubscriptionPaymentMethod;
 use Goteo\Payment\Payment;
 use Goteo\Repository\InvestOriginRepository;
 
@@ -1289,7 +1290,8 @@ class Invest extends Model {
                 invest.call as `call`,
                 invest.matcher as `matcher`,
                 invest.anonymous as anonymous,
-                invest_msg.msg as msg
+                invest_msg.msg as msg,
+                invest.method
             FROM    invest
             LEFT JOIN invest_msg
                 ON invest_msg.invest=invest.id
@@ -1305,6 +1307,10 @@ class Invest extends Model {
         foreach ($query->fetchAll(\PDO::FETCH_OBJ) as $investor) {
 
             $investor->avatar = Image::get($investor->user_avatar);
+
+            $invest = new Invest();
+            $invest->method = $investor->method;
+            $invest->user = $investor->user;
 
             // si el usuario es hide o el aporte es anonymo, lo ponemos como el usuario anonymous (avatar 1)
             if (!$showall && ($investor->hide == 1 || $investor->anonymous == 1)) {
@@ -1324,7 +1330,9 @@ class Invest extends Model {
                     'droped' => $investor->droped,
                     'campaign' => $investor->campaign,
                     'call' => $investor->call,
-                    'msg' => $investor->msg
+                    'msg' => $investor->msg,
+                    'method' => $investor->method,
+                    'invest' => $invest,
                 );
 
             } else {
@@ -1341,7 +1349,9 @@ class Invest extends Model {
                     'campaign' => $investor->campaign,
                     'call' => $investor->call,
                     'matcher'   => $investor->matcher,
-                    'msg' => $investor->msg
+                    'msg' => $investor->msg,
+                    'method' => $investor->method,
+                    'invest' => $invest
                 );
             }
 

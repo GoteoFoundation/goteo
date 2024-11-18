@@ -53,7 +53,7 @@
 								</div>
 								<div class="pull-right text-right">
 									<div>
-									<?= $this->text('project-invest') ?>
+									<?= $invest->invest->getMethod()->isSubscription() ? $this->text('project-invest-from-subscription') : $this->text('project-invest') ?>
 									</div>
 									<div class="amount">
 									<?= amount_format($invest->amount) ?>
@@ -93,7 +93,7 @@
 	                            <?php endif ?>
 								<div class="pull-right text-right">
 									<div>
-									<?= $this->text('project-invest') ?>
+									<?= $invest->invest->getMethod()->isSubscription() ? $this->text('project-invest-from-subscription') : $this->text('project-invest') ?>
 									</div>
 									<div class="amount">
 									<?= amount_format($invest->amount) ?>

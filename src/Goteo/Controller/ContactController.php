@@ -16,6 +16,7 @@ use Goteo\Application\Session;
 use Goteo\Core\Controller;
 use Goteo\Library;
 use Goteo\Library\Text;
+use Goteo\Model\FormHoneypot;
 use Goteo\Model\Mail;
 use Goteo\Model\Page;
 use Goteo\Model\Template;
@@ -84,6 +85,22 @@ class ContactController extends Controller {
                 }
             }
 
+            // check honeypot trap
+            $trap = Session::get('form-honeypot');
+            Session::del('form-honeypot');
+            if (FormHoneypot::checkTrap($trap, $request)) {
+                $honeypot = new FormHoneypot;
+                $honeypot->trap = $trap;
+                $honeypot->prey = $request->request->get($trap);
+
+                $honeypot->validate($honeypotErrors);
+                $honeypot->save($honeypotErrors);
+
+                // Make robot makers think they have succeeded
+                Message::info('Mensaje de contacto enviado correctamente.');
+                return $this->redirect('/contact');
+            }
+
             $data = array(
                 'tag' => $tag,
                 'subject' => $subject,
@@ -104,19 +121,19 @@ class ContactController extends Controller {
                         $user_template=Template::CONTACT_AUTO_REPLY_NEW_PROJECT;
                         break;
                     case 'contact-form-project-form-tag-name':
-                         $to_admin = Config::get('mail.contact');
-                         $user_template=Template::CONTACT_AUTO_REPLY_PROJECT_FORM;
+                        $to_admin = Config::get('mail.contact');
+                        $user_template=Template::CONTACT_AUTO_REPLY_PROJECT_FORM;
                         break;
                     case 'contact-form-dev-tag-name':
-                         $to_admin = Config::get('mail.fail');
-                         $user_template=Template::CONTACT_AUTO_REPLY_DEV;
+                        $to_admin = Config::get('mail.fail');
+                        $user_template=Template::CONTACT_AUTO_REPLY_DEV;
                         break;
                     case 'contact-form-relief-tag-name':
                         $to_admin = Config::get('mail.donor');
                         $user_template=Template::CONTACT_AUTO_REPLY_RELIEF;
                         break;
                     case 'contact-form-service-tag-name':
-                         $to_admin = Config::get('mail.management');
+                        $to_admin = Config::get('mail.management');
                         break;
                     default:
                         $to_admin = Config::get('mail.contact');
@@ -170,9 +187,14 @@ class ContactController extends Controller {
             $captcha->build();
             Session::store('captcha-phrase', $captcha->getPhrase());
         }
+
         // Generate a new form token
         $token = sha1(uniqid(mt_rand(), true));
         Session::store('form-token', $token);
+
+        // Generate honeypot fields
+        $honeypot = FormHoneypot::layTrap();
+        Session::store('form-honeypot', $honeypot->trap);
 
         return $this->viewResponse('about/contact',
             array(
@@ -181,6 +203,7 @@ class ContactController extends Controller {
                 'token'    => $token,
                 'page'    => Page::get('contact'),
                 'captcha' => $captcha,
+                'honeypot' => $honeypot,
                 'errors'  => $errors
             )
         );

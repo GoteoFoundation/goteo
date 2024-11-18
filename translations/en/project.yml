@@ -20,6 +20,7 @@ project-help-license: 'I need help with collective returns and licenses'
 project-hide-donors: 'Hide donors'
 project-hide-needs: 'Hide list of needs'
 project-invest: Donation
+project-invest-from-subscription: Subscription
 project-invest-msg: 'Support message:'
 project-langs-header: 'Project in:'
 project-media-play_video: 'Watch video'

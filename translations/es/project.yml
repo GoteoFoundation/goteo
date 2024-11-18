@@ -23,6 +23,7 @@ project-help-license: 'Necesito ayuda para definir los retornos colectivos y las
 project-hide-donors: 'Ocultar cofinanciadores'
 project-hide-needs: 'Ocultar listado de necesidades'
 project-invest: Aportación
+project-invest-from-subscription: Suscripción
 project-invest-msg: 'Mensaje de apoyo:'
 project-langs-header: 'Proyecto en'
 project-media-play_video: 'Ver video'

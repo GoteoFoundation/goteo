@@ -14,6 +14,7 @@ role-name-superadmin: 'Super Administrador'
 role-name-owner: 'Impulsor'
 role-name-root: 'Root'
 role-name-matcher: 'Matcher'
+role-name-helper: 'Ayudante'
 
 role-perm-name-create-project: 'Puede crear proyectos'
 role-perm-name-edit-project: 'Puede editar sus proyectos'

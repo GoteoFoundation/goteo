@@ -346,4 +346,9 @@ abstract class AbstractPaymentMethod implements PaymentMethodInterface
     {
         return false;
     }
+
+    public function isSubscription(): bool
+    {
+        return false;
+    }
 }
