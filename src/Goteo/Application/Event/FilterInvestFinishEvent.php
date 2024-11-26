@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Contracts\EventDispatcher\Event;
+use Goteo\Application\Session;
 use Goteo\Model\Invest;
 
 class FilterInvestFinishEvent extends Event
@@ -46,6 +47,10 @@ class FilterInvestFinishEvent extends Event
 
     public function getHttpResponse() {
         if($this->response) return $this->response;
+
+        if ($return_to = Session::get('return_to'))
+            return new RedirectResponse($return_to);
+
         // Default is a redirection
         if($this->invest->project) {
             return new RedirectResponse('/invest/' . $this->invest->project . '/' . $this->invest->id . '/share');
