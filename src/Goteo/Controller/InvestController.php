@@ -97,8 +97,11 @@ class InvestController extends Controller {
         );
 
         if ($request) {
-            $return_to = $request->query->get('return_to', '');
-            Session::store('return_to', $return_to);
+            $return_to = '';
+            if ($request->query->has('return_to')) {
+                $return_to = $request->query->get('return_to', '');
+                Session::store('return_to', $return_to);
+            }
         }
 
         $this->page = '/invest/' . $project_id;
@@ -266,7 +269,7 @@ class InvestController extends Controller {
     public function loginAction($project_id, Request $request)
     {
         $amount = $request->query->get('amount');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false);
+        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false, $request);
 
         if($reward instanceOf Response) return $reward;
         if(!$request->query->has('return')) {
@@ -288,7 +291,7 @@ class InvestController extends Controller {
     public function signupAction($project_id, Request $request)
     {
         $amount = $request->query->get('amount');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false);
+        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false, $request);
 
         if($reward instanceOf Response) return $reward;
         if(!$request->query->has('return')) {
@@ -352,7 +355,7 @@ class InvestController extends Controller {
         $tip=$request->query->get('tip');
         $donate_amount =  $tip ? $request->query->get('donate_amount') : 0;
         $amount = $amount_original = $request->query->get('amount');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
+        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto', $request);
 
         if($reward instanceOf Response) return $reward;
 
