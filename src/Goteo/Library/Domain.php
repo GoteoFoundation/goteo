@@ -18,7 +18,18 @@ class Domain
         if (empty($domains))
             return false;
 
-        $parse = parse_url($domain);
-        return in_array($parse['host'], $domains);
+        $parse = parse_url($domain, PHP_URL_HOST);
+        if (!$parse)
+            return false;
+
+        $validDomains = array_filter($domains, function ($domain) use ($parse) {
+            $parsedDomain = parse_url($domain);
+            if (!$parsedDomain['scheme'])
+                return $parsedDomain['path'] == $parse;
+
+            return $parsedDomain['host'] == $parse;
+        });
+
+        return !empty($validDomains);
     }
 }
