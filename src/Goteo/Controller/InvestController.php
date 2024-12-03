@@ -23,6 +23,7 @@ use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Core\Controller;
+use Goteo\Library\Domain;
 use Goteo\Library\Text;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
@@ -98,9 +99,12 @@ class InvestController extends Controller {
 
         if ($request) {
             $return_to = '';
+
             if ($request->query->has('return_to')) {
-                $return_to = $request->query->get('return_to', '');
-                Session::store('return_to', $return_to);
+                $return_to = $request->query->get('return_to');
+
+                if (Domain::isAllowedDomain($return_to))
+                    Session::store('return_to', $return_to);
             }
         }
 
