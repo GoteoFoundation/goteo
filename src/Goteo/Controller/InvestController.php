@@ -101,7 +101,7 @@ class InvestController extends Controller {
             $return_to = '';
 
             if ($request->query->has('return_to')) {
-                $return_to = $request->query->get('return_to');
+                $return_to = rawurldecode($request->query->get('return_to'));
 
                 if (Domain::isAllowedDomain($return_to))
                     Session::store('return_to', $return_to);
