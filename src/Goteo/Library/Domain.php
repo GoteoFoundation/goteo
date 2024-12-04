@@ -18,7 +18,7 @@ class Domain
         if (empty($domains))
             return false;
 
-        $parse = parse_url($domain, PHP_URL_HOST);
+        $parse = parse_url(rawurldecode($domain), PHP_URL_HOST);
         if (!$parse)
             return false;
 
