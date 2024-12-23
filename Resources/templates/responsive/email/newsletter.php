@@ -212,7 +212,7 @@
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <a class="btn-fundacion" href="https://goteo.org/project/siguenos-la-corriente" style="color: #58595b;padding: 6px 12px;background-color: #fff;display: inline-block;margin-bottom: 20px;font-size: 14px;font-weight: 400;line-height: 1.42857143;text-align: center;white-space: nowrap;cursor: pointer;border: 1px solid transparent;border-radius: 4px;text-decoration: none; margin-top: 5px;"><?= $this->t('support-our-mission', $this->lang) ?>
+                                                <a class="btn-fundacion" href="https://www.goteo.org/project/goteo-pero-mejor" style="color: #58595b;padding: 6px 12px;background-color: #fff;display: inline-block;margin-bottom: 20px;font-size: 14px;font-weight: 400;line-height: 1.42857143;text-align: center;white-space: nowrap;cursor: pointer;border: 1px solid transparent;border-radius: 4px;text-decoration: none; margin-top: 5px;"><?= $this->t('support-our-mission', $this->lang) ?>
                                                 </a>
                                             </td>
                                         </tr>
