@@ -20,3 +20,10 @@ GBP:
     thousands: ','
     decimal: .
     active: true
+
+MXN:
+    name: 'Peso Mexicano'
+    symbol: '$'
+    thousands: ','
+    decimal: '.'
+    active: true
