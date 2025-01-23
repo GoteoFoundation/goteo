@@ -160,19 +160,19 @@ use Goteo\Library\Check;
             <?= $this->text('project-view-metter-got') ?>
         </div>
         <div class="reached">
-            <?= amount_format($project->amount) ?>
+            <?= amount_format($project->amount, 0, false, false, true) ?>
         </div>
         <div class="optimum-label">
             <?= $this->text('project-view-metter-optimum') ?>
         </div>
         <div class="optimum">
-            <?= amount_format($project->maxcost) ?>
+            <?= amount_format($project->maxcost, 0, false, false, true, $project->currency) ?>
         </div>
         <div class="minimum-label">
             <?= $this->text('project-view-metter-minimum') ?>
         </div>
         <div class="minimum">
-            <?= amount_format($project->mincost) ?>
+            <?= amount_format($project->mincost, 0, false, false, true, $project->currency) ?>
         </div>
     </div>
 </div>

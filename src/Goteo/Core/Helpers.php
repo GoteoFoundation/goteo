@@ -170,9 +170,9 @@ namespace {
     /**
      * Numberformat para convertir importes
      */
-    function amount_format($amount, $decs = 0, $nosymbol = false, $revert = false, $format = true) {
+    function amount_format($amount, $decs = 0, $nosymbol = false, $revert = false, $format = true, $current_currency = null) {
 
-        return Currency::amountFormat($amount, $decs, $nosymbol, $revert, $format);
+        return Currency::amountFormat($amount, $decs, $nosymbol, $revert, $format, $current_currency);
     }
 
     /**
