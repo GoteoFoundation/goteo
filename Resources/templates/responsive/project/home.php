@@ -48,8 +48,8 @@
                                       <strong><?= $cost->name ?></strong>
                                       <div><?= $cost->description ?></div>
                                   </td>
-                                  <td class="text-center text-nowrap"><span class="required"><?= amount_format($cost->min) ?></span></td>
-                                  <td class="text-center text-nowrap"><?= !$cost->min ? amount_format($cost->opt) : '' ?></td>
+                                  <td class="text-center text-nowrap"><span class="required"><?= amount_format($cost->min, 0, false, false, true, $project->currency) ?></span></td>
+                                  <td class="text-center text-nowrap"><?= !$cost->min ? amount_format($cost->opt, 0, false, false, true, $project->currency) : '' ?></td>
                                 </tr>
                                 <?php if(end($this->costs)==$list&&end($list)==$cost): ?>
                                     <tr>
@@ -58,10 +58,10 @@
                                         </td>
 
                                         <td class="text-center text-nowrap" data-type="html" data-breakpoints="xs">
-                                            <span class="required"><?= amount_format($project->mincost) ?></span>
+                                            <span class="required"><?= amount_format($project->mincost, 0, false, false, true, $project->currency) ?></span>
                                         </td>
                                         <td class="text-center text-nowrap" data-type="html" data-breakpoints="xs">
-                                            <?= amount_format($project->maxcost) ?>
+                                            <?= amount_format($project->maxcost, 0, false, false, true, $project->currency) ?>
                                         </td>
                                     </tr>
                                 <?php endif ?>
