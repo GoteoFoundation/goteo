@@ -184,7 +184,7 @@ EOT
         $num = count($cron_report->getReports());
 
         $this->info("---CRON COMMAND---");
-        $this->info(sprintf("Date %s", (new \DateTime())->format(\DateTime::ISO8601_EXPANDED)));
+        $this->info(sprintf("Date %s", (new \DateTime())->format(\DateTime::ISO8601)));
         $this->info("Running $num processes", ['processes' => $num]);
 
         // wait
