@@ -6,5 +6,5 @@
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/home/home.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/home/projects.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/components/values.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/components/announcements.js"></script>
 <!-- endbuild -->
-

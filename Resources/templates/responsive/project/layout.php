@@ -57,6 +57,7 @@ $this->section('sidebar-header');
     echo $this->insert('project/widgets/micro', ['project' => $project, 'admin' => $this->admin]);
 $this->replace();
 
+$this->supply('announcements', $this->insert("partials/components/announcements"));
 
 $this->section('content');
 

@@ -135,6 +135,7 @@ admin:
         - edit-any-matcher # View any editing matcher
         - remove-any-matcher # Remove any matcher
         - admin-module-channels # Can access to channels admin modules
+        - admin-module-announcements # Can access to announcements admin modules
     level: 70
 
 superadmin:

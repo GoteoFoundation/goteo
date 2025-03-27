@@ -16,6 +16,7 @@ use Goteo\Application\Config\ConfigException;
 use Goteo\Application\Config\YamlSettingsLoader;
 use Goteo\Console\UsersSend;
 use Goteo\Controller\Admin\AccountsSubController;
+use Goteo\Controller\Admin\AnnouncementAdminController;
 use Goteo\Controller\Admin\BannersSubController;
 use Goteo\Controller\Admin\BlogAdminController;
 use Goteo\Controller\Admin\CategoriesAdminController;
@@ -346,6 +347,7 @@ class Config {
         AdminController::addSubController(ChannelProjectsAdminController::class);
         AdminController::addSubController(ImpactDataAdminController::class);
 		AdminController::addSubController(SubscriptionsAdminController::class);
+		AdminController::addSubController(AnnouncementAdminController::class);
     }
 
     static public function addLegacyAdminControllers()

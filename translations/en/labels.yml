@@ -10,6 +10,7 @@ accounts-lb-move: 'Relocating the contribution'
 accounts-lb-report: 'Project report'
 accounts-lb-update: 'Changing the status of the contribution'
 accounts-lb-viewer: 'Watching logs'
+announcement-lb: 'Announcements'
 banners-lb: Banner
 banners-lb-add: 'New Banner'
 banners-lb-cancel: 'Canceling contribution'

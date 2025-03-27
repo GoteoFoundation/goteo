@@ -2,4 +2,5 @@
 <!-- build:js assets/js/project.js -->
 <script src="<?= SRC_URL ?>/assets/vendor/slick-carousel/slick/slick.min.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/project/project.js"></script>
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/components/announcements.js"></script>
 <!-- endbuild -->

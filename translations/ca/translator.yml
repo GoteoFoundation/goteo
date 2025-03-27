@@ -27,6 +27,8 @@ translator-field-text: Text
 translator-field-title: Títol
 translator-field-subtitle: Subtítol
 translator-field-twitter_msg: 'Missatge de twitter'
+translator-field-cta_url: 'Call To Action Url'
+translator-field-cta_text: 'Call To Action'
 translator-glossary: 'Glossari de termes'
 translator-icon: 'Tipus de retorn/recompensa'
 translator-info: 'Idees de about'

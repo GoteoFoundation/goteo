@@ -20,6 +20,7 @@ use Goteo\Model\Sdg;
 use Goteo\Model\Stories;
 use Goteo\Model\Node;
 use Goteo\Model\Sponsor;
+use Goteo\Repository\AnnouncementRepository;
 use Goteo\Util\Stats\Stats;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -50,11 +51,15 @@ class IndexController extends DiscoverController
 
         $projects_by_footprint = [];
         $sdg_by_footprint = [];
-        foreach($footprints as $footprint) {
+        foreach ($footprints as $footprint) {
             $footprintImpactData[$footprint->id] = $footprint->getListOfImpactData(['source' => 'manual']);
             $projects_by_footprint[$footprint->id] = Project::getByFootprint(['footprints' => $footprint->id, 'rand' => true, 'amount_bigger_than' => 7000]);
             $sdg_by_footprint[$footprint->id] = Sdg::getList(['footprint' => $footprint->id]);
         }
+
+        $announcementRepository = new AnnouncementRepository();
+        $announcementList = $announcementRepository->getActiveList();
+
 
         return $this->viewResponse('home/index', [
             'banners'   => $banners,
@@ -71,13 +76,14 @@ class IndexController extends DiscoverController
             'projects_by_footprint' => $projects_by_footprint,
             'sdg_by_footprint' => $sdg_by_footprint,
             'footprint_impact_data' => $footprintImpactData,
+            'announcements' => $announcementList
         ]);
     }
 
     private function getSponsors(): array
     {
         $sponsors = [];
-        foreach(Sponsor::getTypes() as $type) {
+        foreach (Sponsor::getTypes() as $type) {
             $sponsors[$type] = Sponsor::getList(['type' => $type]);
         }
         return $sponsors;

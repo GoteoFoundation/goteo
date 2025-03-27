@@ -20,14 +20,19 @@ use Goteo\Library\Text;
 use Goteo\Model\Blog\Post;
 use Goteo\Model\Blog\Post\Tag;
 use Goteo\Model\Node\NodePost;
+use Goteo\Repository\AnnouncementRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 class BlogController extends Controller {
+
+    private AnnouncementRepository $announcementRepository;
 
     public function __construct() {
         $this->dbReplica(true);
         $this->dbCache(true);
         View::setTheme('responsive');
+
+        $this->announcementRepository = new AnnouncementRepository();
     }
 
     public function indexAction(Request $request, $section='', $tag='') {
@@ -56,6 +61,8 @@ class BlogController extends Controller {
         $blog_sections = Post::getListSections();
         $tag = Tag::get($tag);
 
+        $announcements = $this->announcementRepository->getActiveList();
+
         return $this->viewResponse('blog/list', [
             'banners' => $banners,
             'list_posts' => $list_posts,
@@ -63,7 +70,8 @@ class BlogController extends Controller {
             'section' => $section,
             'tag' => $tag,
             'limit' => $limit,
-            'total' => $total
+            'total' => $total,
+            'announcements' => $announcements
         ]);
     }
 
@@ -107,11 +115,14 @@ class BlogController extends Controller {
 
         $related_posts = Post::getList(['tag' => $first_key_tags, 'excluded' => $post->id ], true, 0, $limit = 3, false);
 
+        $announcements = $this->announcementRepository->getActiveList();
+
         return $this->viewResponse('blog/post', [
             'post' => $post,
             'blog_sections'     => $blog_sections,
             'related_posts' => $related_posts,
-            'author' => $author
+            'author' => $author,
+            'announcements' => $announcements
         ]);
     }
 }
