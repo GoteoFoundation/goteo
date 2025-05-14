@@ -499,4 +499,10 @@ $api->add('api-data-set-footprints-sdgs', new Route(
     array('_controller' => 'Goteo\Controller\Api\DataSetApiController::dataSetsAction')
 ));
 
+// Promote change property of active
+$api->add('api-promote-property', new Route(
+    '/announcement/{id}/property/{prop}',
+    array('_controller' => 'Goteo\Controller\Api\AnnouncementApiController::announcementPropertyAction')
+));
+
 return $api;

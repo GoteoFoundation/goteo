@@ -23,6 +23,7 @@ use Goteo\Application\Message;
 use Goteo\Application\Session;
 use Goteo\Application\View;
 use Goteo\Core\Controller;
+use Goteo\Library\Domain;
 use Goteo\Library\Text;
 use Goteo\Model\Invest;
 use Goteo\Model\Project;
@@ -73,7 +74,7 @@ class InvestController extends Controller {
      * the skip_login variable from project configuration
      */
     private function validate(
-        $project_id, $reward_id = null, &$custom_amount = null, $invest = null, $login_required = true
+        $project_id, $reward_id = null, &$custom_amount = null, $invest = null, $login_required = true, ?Request $request = null
     ) {
         $project = Project::get($project_id, Lang::current());
         // Add analytics to config
@@ -96,11 +97,23 @@ class InvestController extends Controller {
             Config::get('currency')
         );
 
+        if ($request) {
+            $return_to = '';
+
+            if ($request->query->has('return_to')) {
+                $return_to = $request->query->get('return_to');
+
+                if (Domain::isAllowedDomain($return_to))
+                    Session::store('return_to', $return_to);
+            }
+        }
+
         $this->page = '/invest/' . $project_id;
         $this->query = http_build_query([
             'amount' => "$amount_original$currency",
             'reward' => $reward_id,
-            'donate_amount' => "$donate_amount$currency"
+            'donate_amount' => "$donate_amount$currency",
+            'return_to' => $return_to
         ]);
 
         // Some projects may have activated a non-registering investion
@@ -243,7 +256,7 @@ class InvestController extends Controller {
     {
         // TODO: add events
         $amount = $request->query->get('amount');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false);
+        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false, $request);
         if($reward instanceOf Response) return $reward;
 
         // Aqui cambiar por escoger recompensa
@@ -260,7 +273,7 @@ class InvestController extends Controller {
     public function loginAction($project_id, Request $request)
     {
         $amount = $request->query->get('amount');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false);
+        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false, $request);
 
         if($reward instanceOf Response) return $reward;
         if(!$request->query->has('return')) {
@@ -282,7 +295,7 @@ class InvestController extends Controller {
     public function signupAction($project_id, Request $request)
     {
         $amount = $request->query->get('amount');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false);
+        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, false, $request);
 
         if($reward instanceOf Response) return $reward;
         if(!$request->query->has('return')) {
@@ -307,7 +320,7 @@ class InvestController extends Controller {
         $amount = $request->query->get('amount');
         $donate_amount = $request->query->getInt('donate_amount', Config::get('donate.tip_amount'));
         $email = $request->query->has('email');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
+        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto', $request);
 
         if(!($this->skip_login && $email) && !Session::isLogged()) {
             return $this->redirect('/invest/' . $project_id . '/signup?' . $this->query);
@@ -346,7 +359,7 @@ class InvestController extends Controller {
         $tip=$request->query->get('tip');
         $donate_amount =  $tip ? $request->query->get('donate_amount') : 0;
         $amount = $amount_original = $request->query->get('amount');
-        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto');
+        $reward = $this->validate($project_id, $request->query->get('reward'), $amount, null, 'auto', $request);
 
         if($reward instanceOf Response) return $reward;
 
@@ -601,13 +614,15 @@ class InvestController extends Controller {
                     }
                 }
                 $invest->extra_info = $invest_address['extra_info'];
-                $invest->save();
+                $invest->save($errors);
 
-                if($ok && $invest->setAddress($invest_address)) {
+                $isAddressValid = $invest->setAddress($invest_address);
+                if($ok && $isAddressValid) {
                     return $this->dispatch(AppEvents::INVEST_FINISHED, new FilterInvestFinishEvent($invest, $request))->getHttpResponse();
                 }
             }
             Message::error(Text::get('invest-address-fail'));
+            Message::error(implode(',', $errors));
         }
 
         return $this->viewResponse(

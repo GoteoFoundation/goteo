@@ -35,6 +35,11 @@ body.channel {
         }
     }
 
+    nav.top-navbar:has(~ .announcement:not([style*="display:none"])) {
+      min-height: fit-content;
+      padding-bottom: 1em;
+    }
+
     background: $color-white;
 
     .btn {
@@ -326,6 +331,12 @@ body.channel {
     }
 
     .top-navbar {
+
+      :has(+ .announcement) {
+        min-height: fit-content;
+        padding-bottom: 1em;
+      }
+
       &.premium {
         padding-top: 2em;
       }

@@ -6,4 +6,4 @@
 
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/channel/stories.js"></script>
 <script type="text/javascript" src="<?= SRC_URL ?>/assets/js/channel/call.js"></script>
-
+<script type="text/javascript" src="<?= SRC_URL ?>/assets/js/components/announcements.js"></script>

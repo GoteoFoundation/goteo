@@ -81,6 +81,9 @@ url:
             - /password-reset
             - /signup
 
+    # Domains that are allowed by the application to redirect to outside of the platform.
+    allowed_domains:
+
     # If you want to use a CDN or another web server to serve the cached images
     # You can define this constants. All cached images links will point to this
     # Url, event if don't exists yet.

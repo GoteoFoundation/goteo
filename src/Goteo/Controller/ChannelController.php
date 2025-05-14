@@ -43,6 +43,7 @@ use Goteo\Model\Page;
 use Goteo\Model\SocialCommitment;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Questionnaire;
+use Goteo\Repository\AnnouncementRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -108,6 +109,9 @@ class ChannelController extends Controller {
         $sectionsCount = NodeSections::getList(['node' => $channel->id], 0, 0, true);
         $sections = array_column(NodeSections::getList(['node' => $channel->id], 0, $sectionsCount), null, 'section');
 
+        $announcementRepository = new AnnouncementRepository();
+        $announcementList = $announcementRepository->getActiveList();
+
         $this->contextVars([
             'channel'     => $channel,
             'side_order' => $side_order,
@@ -118,7 +122,8 @@ class ChannelController extends Controller {
             'types' => $types,
             'colors' => $colors,
             'url_project_create' => '/channel/' . $id . '/create',
-            'nodeSections' => $sections
+            'nodeSections' => $sections,
+            'announcements' => $announcementList
         ], 'channel/');
     }
 

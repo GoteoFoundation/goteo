@@ -27,6 +27,8 @@ $this->append();
 
 $this->section('content');
 
+$this->supply('announcements', $this->insert("partials/components/announcements"));
+
 ?>
 
 <div class="blog">

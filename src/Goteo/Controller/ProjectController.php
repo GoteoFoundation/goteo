@@ -42,6 +42,7 @@ use Goteo\Model\Project\Favourite;
 use Goteo\Model\Project\ProjectLocation;
 use Goteo\Model\Project\ProjectMilestone;
 use Goteo\Model\SocialCommitment;
+use Goteo\Repository\AnnouncementRepository;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -141,6 +142,9 @@ class ProjectController extends Controller {
 	protected function view(Request $request, $project, $show, $post = null) {
 		DB::cache(true);
 
+        $announcementRepository = new AnnouncementRepository();
+        $announcementList = $announcementRepository->getActiveWithoutDonationList();
+
 		if( !$project instanceOf Project ) {
             $project = Project::get($project, Lang::current(false));
         }
@@ -197,7 +201,8 @@ class ProjectController extends Controller {
                 'blog' => null,
                 'related_projects' => $related_projects,
                 'widget_code' => $widget_code,
-                'footprints' => $footprints
+                'footprints' => $footprints,
+                'announcements' => $announcementList
             ];
 
             $impactDataProjectByFootprint = [];
