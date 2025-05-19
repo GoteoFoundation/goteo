@@ -118,9 +118,9 @@ invest-user-name-or-anonymous: 'El nom és obligatori si no vols fer una aportac
 invest-created-manually-ok: 'Aportació manual creada correctament, sel·leccioneu recompensa i adreça d''entrega.'
 invest-created-manually-ko: 'Error al crear una aportació manual [%s]'
 invest-tip-part-1: 'Vull sumar a la meva donació: '
-invest-tip-part-2: 'per a contribuir a la missió de la <b>Fundació Goteo</b><br> per una societat més ètica i col·laborativa'
-invest-mail-donate-tip: 'Amb la teva donació has decidit col·laborar amb la <strong>Fundació Goteo</strong> amb %s € adicionals, gràcies de cor.'
-invest-update-total: 'Realitzaràs una donació total de <span class="amount-reminder" id="total-amount">%TOTAL_AMOUNT%</span>  👉 <span class="break-down">%PROJECT_AMOUNT% al projecte + <span id="tip-amount">%DONATE_AMOUNT%</span> a Fundació Goteo'
+invest-tip-part-2: 'per a contribuir a la <b>Fundació Platoniq</b><br> per la millora de la plataforma Goteo'
+invest-mail-donate-tip: 'Amb la teva donació has decidit col·laborar amb la <strong>Fundació Platoniq</strong> amb %s € adicionals, gràcies de cor.'
+invest-update-total: 'Realitzaràs una donació total de <span class="amount-reminder" id="total-amount">%TOTAL_AMOUNT%</span>  👉 <span class="break-down">%PROJECT_AMOUNT% al projecte + <span id="tip-amount">%DONATE_AMOUNT%</span> a Fundació Platoniq'
 invest-extra-info: 'Informació extra'
 donor-legal-entities-natural-person: Persona física
 donor-legal-entities-legal-person: Persona jurídica
