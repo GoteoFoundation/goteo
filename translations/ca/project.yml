@@ -93,6 +93,7 @@ tooltip-project-help-cost: 'Si no tens clar el desglossament de costos o vols co
 tooltip-project-help-license: 'Si tens dubtes sobre les llicències més adequades als retorns col·lectius del teu projecte, marca aquesta opció. Hauràs de finalitzar i enviar-nos el formulari per poder assessorar-te.'
 tooltip-project-2rounds: 'Si esculls aquesta opció, el teu projecte tindrà 2 rondes de finançament de 40 dies. Una para aconseguir el mínim i l''altre per l''òptim.'
 tooltip-project-rounds: 'Si esculls aquesta opció, el teu projecte només tindrà una ronda de 40 dies per aconseguir la finançament necesaria: tot o res.'
+tooltip-project-rounds-sunset: 'S''ha limitat el nombre de rondes d''un projecte. <a href="https://www.goteo.org/blog/se-avecinan-grandes-cambios-adelante-no-te-pierdas-nada?preview">Més informació.</a>'
 tooltip-project-scope: 'Indica l''impacte geogràfic que aspira a tenir el projecte (cada categoria inclou l''anterior). '
 tooltip-project-spread: 'Explica''ns com penses difondre el projecte entre la teva comunitat: canals, tipus o to dels missatges, accions de difusió, calendari mínim...'
 tooltip-updates-home: 'Text tooltip-updates-home'
