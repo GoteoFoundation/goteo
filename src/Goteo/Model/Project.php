@@ -1593,6 +1593,11 @@ class Project extends Model {
             // fail para pasar por todo antes de devolver false
             $fail = false;
 
+            if ($this->status < self::STATUS_IN_CAMPAIGN && $this->one_round !== 1) {
+                $errors[] = Text::get('tooltip-project-rounds-sunset');
+                $fail = true;
+            }
+
             // los nif sin guiones, espacios ni puntos
             $this->contract_nif = str_replace(array('_', '.', ' ', '-', ',', ')', '('), '', $this->contract_nif);
             $this->entity_cif = str_replace(array('_', '.', ' ', '-', ',', ')', '('), '', $this->entity_cif);

@@ -75,14 +75,17 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
         if ($admin || $project->type != Conf::TYPE_PERMANENT ) {
             $builder
                 ->add('one_round', ChoiceType::class, [
-                    'disabled' => $this->getReadonly(),
+                    'disabled' => true, //$this->getReadonly(),
                     'label' => 'costs-field-select-rounds',
                     'required' => true,
                     'expanded' => true,
                     'wrap_class' => 'col-xs-6',
                     'choices' => $this->getRoundsAsChoices(),
+                    'data' => 1,
+                    'empty_data' => 1,
                     'attr' => [
-                        'help' => '<span class="' . ($project->one_round ? '' : 'hidden') . '">' . Text::get('tooltip-project-rounds') . '</span><span class="' . ($project->one_round ? 'hidden' : '') . '">' . Text::get('tooltip-project-2rounds') . '</span>'
+                        'help' => '<span>' . Text::get('tooltip-project-rounds-sunset') . '</span>'
+                        //'help' => '<span class="' . ($project->one_round ? '' : 'hidden') . '">' . Text::get('tooltip-project-rounds') . '</span><span class="' . ($project->one_round ? 'hidden' : '') . '">' . Text::get('tooltip-project-2rounds') . '</span>'
                     ]
                 ]);
         }
