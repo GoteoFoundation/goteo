@@ -8,6 +8,11 @@ Goteo The Open Source Crowdfunding Platform
 
 This is the source code of the [Crowdfunding platform Goteo](http://goteo.org).
 
+> [!WARNING]
+> We are sunsetting this version of Goteo. This repository is no longer under active maintenance, we will only push changes necessary to carry on with our sunsetting schedule and then we will archive it. NO BUG FIXES OR SECURITY PATCHES WILL BE RELEASED. If you wish to remain working with this codebase, proceed at your own risk.
+>
+> Check out the new codebase of Goteo, under development at https://github.com/goteo.
+
 The Goteo platform is a recognized, award-winning creator of an open standard for crowdfunding for social impact and generating new digital commons, which has been founded and designed by [Platoniq](http://platoniq.net). Platoniq is also the founding board member of the Goteo Foundation which is the responsible for the maintenance of this code.
 
 [![Backed by Goteo Foundation](docs/developers/assets/foundation-logo.png)](https://foundation.goteo.org) &nbsp; [![Created by  Platoniq Sistema Cultural](docs/developers/assets/platoniq-logo.png)](http://platoniq.net)

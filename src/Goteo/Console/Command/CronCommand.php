@@ -24,23 +24,27 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Yaml\Yaml;
 
-class CronCommand extends AbstractCommand {
+class CronCommand extends AbstractCommand
+{
     protected static $resolver = null;
     protected static $crontabLines = [];
 
-    public static function setResolver(ResolverInterface $resolver) {
+    public static function setResolver(ResolverInterface $resolver)
+    {
         static::$resolver = $resolver;
     }
 
-    public static function getResolver() {
+    public static function getResolver()
+    {
         // Initialize resolver if null
-        if(!static::$resolver instanceOf ResolverInterface) {
+        if (!static::$resolver instanceof ResolverInterface) {
             static::setResolver(new ArrayResolver());
         }
         return static::$resolver;
     }
 
-    public static function addJob(JobInterface $job) {
+    public static function addJob(JobInterface $job)
+    {
         return static::getResolver()->addJob($job);
     }
 
@@ -49,7 +53,8 @@ class CronCommand extends AbstractCommand {
      * @param [type] $command  the shell executable program ()
      * @param [type] $schedule the crontab time line (ex: 5 * * * *)
      */
-    public static function addSchedule($command, $schedule) {
+    public static function addSchedule($command, $schedule)
+    {
         chdir(GOTEO_PATH);
         $job = new ShellJob();
         $job->setCommand($command);
@@ -67,12 +72,13 @@ class CronCommand extends AbstractCommand {
      *     'nice' => true|false
      * )
      */
-    public static function addCrontabLine(array $job) {
+    public static function addCrontabLine(array $job)
+    {
         $executable = $job['command'];
-        if($job['type'] == 'php') {
+        if ($job['type'] == 'php') {
             $executable = (new PhpExecutableFinder())->find() . " $executable";
         }
-        if($job['nice']) {
+        if ($job['nice']) {
             $executable = "nice $executable";
         }
         static::$crontabLines[] = [$executable, $job['schedule']];
@@ -88,11 +94,11 @@ class CronCommand extends AbstractCommand {
         // Change to Goteo dir
         chdir(GOTEO_PATH);
         // Initializes crontab from yml resource file
-        if(is_file(GOTEO_PATH . 'Resources/crontab.yml')) {
+        if (is_file(GOTEO_PATH . 'Resources/crontab.yml')) {
             $crontab = Yaml::parse(file_get_contents(GOTEO_PATH . 'Resources/crontab.yml'));
             $env = Config::get('env');
-            if(isset($crontab[$env])) {
-                foreach($crontab[$env] as $job) {
+            if (isset($crontab[$env])) {
+                foreach ($crontab[$env] as $job) {
                     static::addCrontabLine($job);
                 }
             }
@@ -102,12 +108,13 @@ class CronCommand extends AbstractCommand {
     protected function configure()
     {
         $this->setName("cron")
-             ->setDescription("The cron program executor")
-             ->setDefinition(array(
-                    new InputOption('crontab', 'c', InputOption::VALUE_NONE, 'List the crontab defined and exit'),
-                    new InputOption('jobs', 'j', InputOption::VALUE_NONE, 'List the jobs that will be executed now and exit'),
-                ))
-             ->setHelp(<<<EOT
+            ->setDescription("The cron program executor")
+            ->setDefinition(array(
+                new InputOption('crontab', 'c', InputOption::VALUE_NONE, 'List the crontab defined and exit'),
+                new InputOption('jobs', 'j', InputOption::VALUE_NONE, 'List the jobs that will be executed now and exit'),
+            ))
+            ->setHelp(
+                <<<EOT
 Centralizes the execution of scheduled tasks.
 
 Put in your crontab:
@@ -141,30 +148,30 @@ Cron syntax:
 +------------------------- min (0 - 59)
 </>
 EOT
-);
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if(count(static::$crontabLines) == 0) {
+        if (count(static::$crontabLines) == 0) {
             $output->writeln("<fg=red>No crontab at all!</>");
             return;
         }
-        if($input->getOption('crontab')) {
-            foreach(static::$crontabLines as $line) {
+        if ($input->getOption('crontab')) {
+            foreach (static::$crontabLines as $line) {
                 $output->writeln($line[1] . ' ' . $line[0]);
             }
             return;
         }
 
-        if($input->getOption('jobs')) {
+        if ($input->getOption('jobs')) {
             $jobs = static::getResolver()->resolve();
-            foreach($jobs as $i => $job) {
+            foreach ($jobs as $i => $job) {
                 $schedule = $job->getSchedule()->getPattern();
                 $task = $job->getProcess()->getCommandLine();
                 $output->writeln("$schedule $task");
             }
-            if($i == 0) {
+            if ($i == 0) {
                 $output->writeln("<fg=cyan>No jobs now</>");
             }
             return;
@@ -175,48 +182,52 @@ EOT
         $cron->setResolver(static::getResolver());
         $cron_report = $cron->run();
         $num = count($cron_report->getReports());
+
+        $this->info("---CRON COMMAND---");
+        $this->info(sprintf("Date %s", (new \DateTime())->format(\DateTime::ISO8601)));
         $this->info("Running $num processes", ['processes' => $num]);
+
         // wait
-        while($cron->isRunning()) {
+        while ($cron->isRunning()) {
             $output->write(".");
             usleep(100000);
         }
-        $output->writeln("\n");
 
         $i = 0;
-        foreach($cron_report->getReports() as $report) {
+        foreach ($cron_report->getReports() as $report) {
             $process = $report->getJob()->getProcess();
             $task = $report->getJob()->getProcess()->getCommandLine();
             $time = $report->getEndTime() - $report->getStartTime();
             $schedule = $report->getJob()->getSchedule()->getPattern();
-            if($output->isVerbose()) {
-                $output->writeln('[<fg=cyan>'. $task . '</>] <option=bold;fg=' . ($report->isSuccessful() ? 'green>OK' : 'red>ERROR') . '</>');
-            }
-            if($report->isSuccessful()) {
-                $this->info("Completed [$task] " . round($time, 3) . " seconds", ['time' => $time, 'job' => $task, 'schedule' => $schedule]);
-                if($output->isVerbose()) {
-                    $output->writeln('<fg=blue>'. implode("\n", $report->getOutput()) . '</>');
-                }
 
+            if ($output->isVerbose()) {
+                $output->writeln('[<fg=cyan>' . $task . '</>] <option=bold;fg=' . ($report->isSuccessful() ? 'green>OK' : 'red>ERROR') . '</>');
+            }
+
+            if ($report->isSuccessful()) {
+                $this->info("Completed [$task] " . round($time, 3) . " seconds", ['time' => $time, 'job' => $task, 'schedule' => $schedule]);
+                if ($output->isVerbose()) {
+                    $output->writeln('<fg=blue>' . implode("\n", $report->getOutput()) . '</>');
+                }
             } else {
                 $errors = [];
-                foreach($report->getError() as $err) {
+                foreach ($report->getError() as $err) {
                     $errors = array_merge($errors, explode("\n", $err));
                 }
                 $this->error("Failed [$task] " . round($time, 3) . " seconds", ['time' => $time, 'job' => $task, 'schedule' => $schedule, 'error' => $errors]);
-                if($output->isVerbose()) {
-                    $output->writeln('<fg=red>'. implode("\n", $report->getError()) . '</>');
+                if ($output->isVerbose()) {
+                    $output->writeln('<fg=red>' . implode("\n", $report->getError()) . '</>');
                 }
             }
+
             $i++;
         }
-        if($i == 0) {
+
+        if ($i == 0) {
             $output->writeln("<fg=cyan>No jobs now</>");
-        }
-        elseif($cron_report->isSuccessful()) {
+        } elseif ($cron_report->isSuccessful()) {
             $output->writeln("<info>All done</info>");
-        }
-        else {
+        } else {
             $output->writeln("<error>Completed with errors</error>");
         }
     }
