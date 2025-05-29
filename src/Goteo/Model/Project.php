@@ -179,7 +179,7 @@ class Project extends Model {
         $watch = 0,
         $days_round1 = 40,
         $days_round2 = 40,
-        $one_round = 0,
+        $one_round = 1,
         $help_cost = 0,
         $help_license= 0,
         $callInstance = null, // si está en una convocatoria
