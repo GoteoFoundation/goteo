@@ -83,8 +83,8 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                     'choices' => $this->getRoundsAsChoices(),
                     'empty_data' => 1,
                     'attr' => [
-                        'help' => '<span>' . Text::get('tooltip-project-rounds-sunset') . '</span>'
-                        //'help' => '<span class="' . ($project->one_round ? '' : 'hidden') . '">' . Text::get('tooltip-project-rounds') . '</span><span class="' . ($project->one_round ? 'hidden' : '') . '">' . Text::get('tooltip-project-2rounds') . '</span>'
+                        // 'help' => '<span>' . Text::get('tooltip-project-rounds-sunset') . '</span>'
+                        'help' => '<span class="' . ($project->one_round ? '' : 'hidden') . '">' . Text::get('tooltip-project-rounds') . '</span><span class="' . ($project->one_round ? 'hidden' : '') . '">' . Text::get('tooltip-project-2rounds') . '</span>'
                     ]
                 ]);
         }
