@@ -1593,12 +1593,13 @@ class Project extends Model {
             // fail para pasar por todo antes de devolver false
             $fail = false;
 
-            if (in_array($this->status, [self::STATUS_DRAFT, self::STATUS_EDITING, self::STATUS_REVIEWING])
-                && $this->one_round != 1)
-            {
-                $errors[] = Text::get('tooltip-project-rounds-sunset');
-                $fail = true;
-            }
+            // Desactivar proyectos a dos rondas
+            // if (in_array($this->status, [self::STATUS_DRAFT, self::STATUS_EDITING, self::STATUS_REVIEWING])
+            //     && $this->one_round != 1)
+            // {
+            //     $errors[] = Text::get('tooltip-project-rounds-sunset');
+            //     $fail = true;
+            // }
 
             // los nif sin guiones, espacios ni puntos
             $this->contract_nif = str_replace(array('_', '.', ' ', '-', ',', ')', '('), '', $this->contract_nif);
