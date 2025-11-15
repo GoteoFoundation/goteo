@@ -23,17 +23,17 @@ debug: false
 node: goteo
 
 # Default system language
-lang: es
+lang: fa
 
 # Default system language (for SQL tables)
 # (DO NO CHANGE THIS UNLESS YOU KNOW WHAT YOU'RE DOING)
 sql_lang: es
 
 # Default timezone
-timezone: Europe/Madrid
+timezone: Asia/Tehran
 
 # Default public currency for the website
-currency: EUR
+currency: IRR
 
 # Force using https protocol
 ssl: false

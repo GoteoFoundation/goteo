@@ -19,6 +19,7 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
 use Twig\Loader\LoaderInterface;
+use Goteo\Util\Twig\Extension\JalaliExtension;
 
 class TwigEngine implements EngineInterface
 {
@@ -32,6 +33,7 @@ class TwigEngine implements EngineInterface
         $this->loader = new FilesystemLoader(self::TWIG_TEMPLATES_FOLDER);
         $this->twig = new Environment($this->loader);
         $this->twig->addExtension(new RoutingExtension($urlGenerator));
+        $this->twig->addExtension(new JalaliExtension());
     }
 
     /**

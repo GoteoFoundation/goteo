@@ -27,3 +27,10 @@ MXN:
     thousands: ','
     decimal: '.'
     active: true
+
+IRR:
+    name: 'Iranian Rial'
+    symbol: '﷼'
+    thousands: ','
+    decimal: '.'
+    active: true

@@ -47,6 +47,8 @@ class LangUtils implements ExtensionInterface
           'lang_url_query' => [$this, 'lang_url_query'],
           'lang_host' => [$this, 'lang_host'],
           'list_countries' => [$this, 'list_countries'],
+          'is_rtl' => [$this, 'is_rtl'],
+          'lang_dir' => [$this, 'lang_dir'],
         ];
     }
     public function lang_current($public_only = false)
@@ -97,6 +99,30 @@ class LangUtils implements ExtensionInterface
     public function lang_host($lang = null)
     {
         return Lang::getUrl($lang);
+    }
+
+    /**
+     * Check if current language is RTL (Right-to-Left)
+     *
+     * @param string|null $lang Language code (defaults to current)
+     * @return bool
+     */
+    public function is_rtl($lang = null)
+    {
+        $lang = $lang ?: Lang::current();
+        $rtl_languages = ['fa', 'ar', 'he'];
+        return in_array($lang, $rtl_languages);
+    }
+
+    /**
+     * Get text direction for current language
+     *
+     * @param string|null $lang Language code (defaults to current)
+     * @return string 'rtl' or 'ltr'
+     */
+    public function lang_dir($lang = null)
+    {
+        return $this->is_rtl($lang) ? 'rtl' : 'ltr';
     }
 
 }

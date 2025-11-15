@@ -1,0 +1,310 @@
+// RTL (Right-to-Left) Support for Persian/Arabic languages
+// This file contains RTL-specific styles
+
+// Apply RTL layout when html has dir="rtl" or lang="fa" or lang="ar"
+html[dir="rtl"],
+html[lang="fa"],
+html[lang="ar"] {
+    direction: rtl;
+    text-align: right;
+
+    body {
+        direction: rtl;
+        text-align: right;
+        font-family: $primary-font;
+    }
+
+    // Float utilities
+    .pull-left {
+        float: right !important;
+    }
+
+    .pull-right {
+        float: left !important;
+    }
+
+    .text-left {
+        text-align: right !important;
+    }
+
+    .text-right {
+        text-align: left !important;
+    }
+
+    // Margin and padding adjustments
+    .margin-left {
+        margin-left: 0;
+        margin-right: auto;
+    }
+
+    .margin-right {
+        margin-right: 0;
+        margin-left: auto;
+    }
+
+    .padding-left {
+        padding-left: 0;
+        padding-right: inherit;
+    }
+
+    .padding-right {
+        padding-right: 0;
+        padding-left: inherit;
+    }
+
+    // Navigation and menus
+    nav,
+    .nav,
+    .navbar,
+    .menu {
+        ul,
+        ol {
+            li {
+                float: right;
+            }
+        }
+    }
+
+    // Dropdowns
+    .dropdown-menu {
+        right: 0;
+        left: auto;
+        text-align: right;
+    }
+
+    // Forms
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="search"],
+    textarea,
+    select {
+        text-align: right;
+        direction: rtl;
+    }
+
+    // Checkboxes and radio buttons
+    input[type="checkbox"],
+    input[type="radio"] {
+        margin-left: 5px;
+        margin-right: 0;
+    }
+
+    // Buttons with icons
+    .btn {
+        i,
+        .icon {
+            margin-left: 5px;
+            margin-right: 0;
+
+            &.icon-right {
+                margin-left: 0;
+                margin-right: 5px;
+            }
+        }
+    }
+
+    // Tables
+    table {
+        th,
+        td {
+            text-align: right;
+        }
+    }
+
+    // Lists
+    ul,
+    ol {
+        padding-right: 40px;
+        padding-left: 0;
+    }
+
+    // Breadcrumbs
+    .breadcrumb {
+        > li {
+            float: right;
+
+            + li:before {
+                padding: 0 5px 0 0;
+                content: "\\"";
+            }
+        }
+    }
+
+    // Alerts and notifications
+    .alert {
+        text-align: right;
+
+        .close {
+            left: -21px;
+            right: auto;
+        }
+    }
+
+    // Modals
+    .modal-header {
+        .close {
+            margin-left: 0;
+            margin-right: auto;
+        }
+    }
+
+    // Tooltips
+    .tooltip {
+        &.left {
+            right: auto;
+            left: 0;
+        }
+
+        &.right {
+            left: auto;
+            right: 0;
+        }
+    }
+
+    // Sidebar
+    .sidebar {
+        float: right;
+    }
+
+    .main-content {
+        float: left;
+    }
+
+    // Cards and panels
+    .panel,
+    .card {
+        text-align: right;
+    }
+
+    // Pagination
+    .pagination {
+        li {
+            float: right;
+        }
+    }
+
+    // Progress bars
+    .progress-bar {
+        float: right;
+    }
+
+    // Images with captions
+    .figure {
+        text-align: right;
+    }
+
+    // Social media icons
+    .social-links {
+        li {
+            float: right;
+            margin-left: 10px;
+            margin-right: 0;
+        }
+    }
+
+    // Footer
+    .footer {
+        text-align: right;
+    }
+
+    // Admin dashboard specific
+    .dashboard-sidebar {
+        float: right;
+        border-left: 1px solid #ddd;
+        border-right: none;
+    }
+
+    .dashboard-main {
+        float: left;
+    }
+
+    // Date picker
+    .datepicker {
+        direction: rtl;
+        text-align: right;
+
+        td,
+        th {
+            text-align: center;
+        }
+    }
+
+    // Select2 dropdown
+    .select2-container {
+        text-align: right;
+
+        .select2-selection {
+            text-align: right;
+        }
+    }
+
+    // Editor
+    .editor,
+    .wysiwyg {
+        direction: rtl;
+        text-align: right;
+    }
+
+    // File upload
+    .file-upload {
+        text-align: right;
+    }
+
+    // Tabs
+    .nav-tabs {
+        > li {
+            float: right;
+        }
+    }
+
+    // Headers
+    h1, h2, h3, h4, h5, h6 {
+        text-align: right;
+    }
+
+    // Paragraphs
+    p {
+        text-align: right;
+    }
+
+    // Links with icons
+    a {
+        i,
+        .icon {
+            &:first-child {
+                margin-left: 5px;
+                margin-right: 0;
+            }
+
+            &:last-child {
+                margin-right: 5px;
+                margin-left: 0;
+            }
+        }
+    }
+
+    // Custom scrollbar for RTL
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    // Numbers should remain LTR
+    .number,
+    .amount,
+    .price,
+    .currency {
+        direction: ltr;
+        display: inline-block;
+    }
+}
+
+// Persian-specific number conversion (optional)
+// Convert Western numerals to Persian numerals via JavaScript
+html[lang="fa"] {
+    // Keep numbers in Western format for now
+    // Can be converted to Persian numerals (۰۱۲۳۴۵۶۷۸۹) via JavaScript if needed
+}

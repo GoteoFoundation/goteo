@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html{% if app.request.locale in ['fa', 'ar', 'he'] %} dir="rtl" lang="{{ app.request.locale }}"{% endif %}>
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
