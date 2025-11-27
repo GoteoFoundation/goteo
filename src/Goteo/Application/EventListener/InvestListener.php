@@ -219,7 +219,7 @@ class InvestListener extends AbstractListener {
 
         // Manual invests must be manually confirmed as charged
         if ($method instanceof CashPaymentMethod) {
-            $invest->status = Invest::STATUS_PENDING;
+            $invest->status = Invest::STATUS_PROCESSING;
         }
 
         // Set charged date if empty
