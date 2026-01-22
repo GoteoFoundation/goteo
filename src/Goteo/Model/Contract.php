@@ -21,6 +21,10 @@ class Contract extends Model {
     const VAT = 'vat';
     const PASSPORT = 'passport';
     const LEGAL_DOCUMENTS = [self::NIF, self::NIE, self::PASSPORT];
+    const TYPE_NATURAL_PERSON = 0;
+    const TYPE_ASSOCIATION_REPRESENTATIVE = 1;
+    const TYPE_ASSIGNEE_MERCHANT_ENTITY = 2;
+
 
     public
         $project,
@@ -154,7 +158,7 @@ class Contract extends Model {
             }
         }
 
-        $contract->type = 0; // inicialmente persona fisica
+        $contract->type = self::TYPE_NATURAL_PERSON;
         $contract->electronic = 1; // electronic by default
 
         // @FIXME esto tendria que venir de lo rellenado en el paso 2 del formulario de proyecto
@@ -296,7 +300,7 @@ class Contract extends Model {
         $res->promoter = round(100 * ($total - $count)/$total);
 
         // 2. entity
-        if($this->type > 0) {
+        if($this->type > self::TYPE_NATURAL_PERSON) {
             $entity = ['entity_name', 'entity_cif', 'office', 'entity_address', 'entity_location', 'entity_region', 'entity_zipcode', 'entity_country'];
             $total = count($entity);
             $count = 0;
@@ -635,7 +639,7 @@ class Contract extends Model {
         /***************** FIN Revisión del paso PROMOTOR *****************/
 
         /***************** Revisión de campos del paso ENTIDAD *****************/
-        if ($this->type > 0) {  // solo obligatorios para representante
+        if ($this->type > self::TYPE_NATURAL_PERSON) {  // solo obligatorios para representante
             if (empty($this->entity_name)) {
                 $errors['entity']['entity_name'] = Text::get('mandatory-project-field-entity_name');
             } else {
@@ -691,7 +695,7 @@ class Contract extends Model {
 
             // y los legales
             // para representantes de asociación
-            if ($this->type == 1) {
+            if ($this->type == self::TYPE_ASSOCIATION_REPRESENTATIVE) {
                 if (empty($this->reg_name)) {
                     $errors['entity']['reg_name'] = Text::get('mandatory-contract-reg_name_1');
                 } else {
@@ -705,7 +709,7 @@ class Contract extends Model {
             }
 
             // para representantes de entidad jurídica
-            if ($this->type == 2) {
+            if ($this->type == self::TYPE_ASSIGNEE_MERCHANT_ENTITY) {
                 if (empty($this->reg_name)) {
                     $errors['entity']['reg_name'] = Text::get('mandatory-contract-reg_name_1');
                 } else {
