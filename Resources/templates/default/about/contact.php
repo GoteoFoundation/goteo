@@ -4,7 +4,7 @@ $page = $this->page;
 $tags = $this->tags;
 
 $captcha = $this->captcha;
-
+$known_user = \array_key_exists('name', $this->data) && \array_key_exists('email', $this->data);
 
 $this->layout('layout', [
     'bodyClass' => 'about',
@@ -27,6 +27,11 @@ $this->layout('layout', [
 <?php $this->section('content') ?>
 
 <div id="main">
+    <?php if ($known_user) : ?>
+        <iframe
+            src="https://api.chatbotfactory.app/webchat/9369b5c9-e259-4014-a1a5-c71d329afe84"
+            style="width: 100%; height: 600px; border: none; border-radius: 10px;"></iframe>
+    <?php endif ?>
     <div class="widget contact-message">
         <h3 class="title"><?= $page->name ?></h3>
 
@@ -110,6 +115,13 @@ $this->layout('layout', [
         </div>
 
         <div style="float:left;width: 450px;">
+            <?php if (!$known_user) : ?>
+                <div class="contact-info" style="color: #58595b; width: 360px; font-size: 12px;	padding: 5px; line-height: 16px;">
+                    <span class="intro-tit" style="font-size: 21px; font-weight: bold; line-height: 24px;">
+                        Psst... Si quieres una respuesta más rápida: <a style="color: #38b5b1; font-size: 21px; font-weight: bold; line-height: 24px;" href="/login?return=%2Fcontact">inicia sesión</a> para probar nuestro nuevo chatbot.
+                    </span>
+                </div>
+            <?php endif ?>
             <?= $page->parseContent() ?>
         </div>
     </div>
