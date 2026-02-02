@@ -31,6 +31,7 @@ use Goteo\Model\Invest\InvestLocation;
 use Goteo\Model\Mail;
 use Goteo\Model\Template;
 use Goteo\Model\User;
+use Goteo\Payment\Method\CashPaymentMethod;
 use Goteo\Repository\InvestOriginRepository;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -215,6 +216,12 @@ class InvestListener extends AbstractListener {
 
         // Invest status to charged
         $invest->status = Invest::STATUS_CHARGED;
+
+        // Manual invests must be manually confirmed as charged
+        if ($method instanceof CashPaymentMethod) {
+            $invest->status = Invest::STATUS_PROCESSING;
+        }
+
         // Set charged date if empty
         if (empty($invest->charged)) {
             $invest->charged = date('Y-m-d');

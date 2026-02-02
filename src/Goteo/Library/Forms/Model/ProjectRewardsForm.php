@@ -191,7 +191,7 @@ class ProjectRewardsForm extends AbstractFormProcessor implements FormProcessorI
 
         $data = array_intersect_key($form->getData(), $form->all());
         $project = $this->getModel();
-        $project->one_round = (bool) $data['one_round'];
+        // $project->one_round = (bool) $data['one_round'];
 
         $errors = [];
         $ids = [];
