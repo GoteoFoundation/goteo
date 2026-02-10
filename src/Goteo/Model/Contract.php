@@ -121,7 +121,6 @@ class Contract extends Model
      */
     public static function create($id, &$errors = array())
     {
-
         $contract = Contract::get($id);
 
         if (!empty($contract)) {
@@ -161,12 +160,12 @@ class Contract extends Model
                 $year = date('Y', strtotime($success));
             }
 
-            $yearCount = self::query("SELECT COUNT(*) FROM contract WHERE date >= :yearStart AND date <= :yearEnd", [
-                'yearStart' => $year . '01-01',
-                'yearEnd' => $year . '12-31'
-            ])->fetch();
+            $yearCount = (int) self::query("SELECT COUNT(*) AS contracts FROM contract WHERE date >= :yearStart AND date <= :yearEnd", [
+                'yearStart' => $year . '-01-01',
+                'yearEnd' => $year . '-12-31'
+            ])->fetch(\PDO::FETCH_COLUMN);
 
-            $contract->ybid = 'AY' . $year . '-' . str_pad($yearCount, 3, '0', \STR_PAD_LEFT);
+            $contract->ybid = 'AY' . $year . '-' . str_pad($yearCount + 1, 3, '0', \STR_PAD_LEFT);
         }
 
         $contract->type = 0; // inicialmente persona fisica
@@ -382,6 +381,7 @@ class Contract extends Model
             $fields = array(
                 'project',
                 'number',
+                'ybid',
                 'date',
                 'enddate',
                 'type',
