@@ -26,6 +26,7 @@ class Contract extends Model
     public
         $project,
         $number, //numero de contrato
+        $ybid, // ID anual
         $date, // día anterior a la publicación
         $enddate, // un año después de la fecha del contrato
         $pdf, // si está generado aquí viene el nomre de archivo en
@@ -153,6 +154,19 @@ class Contract extends Model
                 $contract->date = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d', $date) - 1, date('Y', $date)));
                 $contract->enddate = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d', $date) - 1, date('Y', $date) + 1));
             }
+
+            $year = date('Y');
+            $success = $projData->one_round ? $projData->passed : $projData->success;
+            if ($success) {
+                $year = date('Y', strtotime($success));
+            }
+
+            $yearCount = self::query("SELECT COUNT(*) FROM contract WHERE date >= :yearStart AND date <= :yearEnd", [
+                'yearStart' => $year . '01-01',
+                'yearEnd' => $year . '12-31'
+            ])->fetch();
+
+            $contract->ybid = 'AY' . $year . '-' . str_pad($yearCount, 3, '0', \STR_PAD_LEFT);
         }
 
         $contract->type = 0; // inicialmente persona fisica
