@@ -515,7 +515,7 @@ class Invest extends Model {
         }
 
         if (!empty($filters['contract'])) {
-            $sqlFilter[] = "contract.number = :contract";
+            $sqlFilter[] = "(contract.number = :contract OR contract.ybid = :contract)";
             $values[':contract'] = $filters['contract'];
         }
         if (!empty($filters['date_from'])) {
