@@ -41,6 +41,7 @@ class ContactController extends Controller {
         $data = [];
 
         if($user = Session::getUser()) {
+            $data['id'] = $user->id;
             $data['name'] = $user->name;
             $data['email'] = $user->email;
         }
