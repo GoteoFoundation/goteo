@@ -497,20 +497,20 @@ class Contract extends Model
     {
 
         $query = static::query("
-            SELECT number, DATE_FORMAT(date, '%d%m%Y') as cdate
+            SELECT number, DATE_FORMAT(date, '%d%m%Y') as cdate, ybid
             FROM contract
             WHERE project = ?
             ", array($id));
 
         $reg = $query->fetchObject();
         if (!empty($reg->number) && !empty($reg->cdate)) {
-            return array($reg->number, $reg->cdate);
+            return array($reg->number, $reg->cdate, $reg->ybid);
         } else {
             // si no hay registro, la fecha de contrato es el día antes de la publicación del proyecto
             $dPublished = (isset($published)) ? strtotime($published) : strtotime(date('dmY'));
             $date = date('dmY', mktime(0, 0, 0, date('m', $dPublished), date('d', $dPublished) - 1, date('Y', $dPublished)));
             $num = 'Num';
-            return array($num, $date);
+            return array($num, $date, $reg->ybid);
         }
     }
 
