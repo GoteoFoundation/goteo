@@ -21,7 +21,7 @@ class RedsysPaymentMethod extends AbstractPaymentMethod
 
     public function getName(): string
     {
-        return Text::get('invest-card-method');
+        return 'Redsys';
     }
 
     public function getDesc(): string
