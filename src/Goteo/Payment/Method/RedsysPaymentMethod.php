@@ -2,8 +2,11 @@
 
 namespace Goteo\Payment\Method;
 
+use Goteo\Application\App;
+use Goteo\Application\AppEvents;
 use Goteo\Application\Config;
 use Goteo\Application\Currency;
+use Goteo\Application\Event\FilterInvestEvent;
 use Goteo\Model\Project;
 use Goteo\Payment\Method\AbstractPaymentMethod;
 use Omnipay\Common\Message\ResponseInterface;
@@ -84,6 +87,30 @@ class RedsysPaymentMethod extends AbstractPaymentMethod
         if ($response->getData()['success']) {
             $invest->setPayment($response->getData()['decodedParameters']['Ds_AuthorisationCode']);
         }
+
+        return $response->send();
+    }
+
+    public function refundable(): bool
+    {
+        return true;
+    }
+
+    public function refund(): ResponseInterface
+    {
+        $invest = $this->getInvest();
+        App::dispatch(AppEvents::INVEST_REFUND, new FilterInvestEvent($invest, $this));
+
+        /** @var \Omnipay\Redsys\Gateway */
+        $gateway = $this->getGateway();
+        $gateway->setMerchantKey(Config::get('payments.redsys.merchantKey'));
+        $gateway->setMerchantCode(Config::get('payments.redsys.merchantCode'));
+        $gateway->setTerminal(Config::get('payments.redsys.terminal'));
+        $gateway->setCurrency(Currency::getDefault('id'));
+
+        $response = $gateway->refund()
+            ->setAmount($invest->getAmount() * 100)
+            ->setTransactionId($invest->preapproval);
 
         return $response->send();
     }
