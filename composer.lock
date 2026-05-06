@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9bf4a9450fdac4764697ac2430103430",
+    "content-hash": "c968723a61d039a7cbcc0831c5da5be3",
     "packages": [
         {
             "name": "amphp/amp",
@@ -1452,11 +1452,17 @@
         },
         {
             "name": "eseperio/omnipay-redsys",
-            "version": "dev-main",
+            "version": "dev-feat/refunds",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/goteo/omnipay-redsys.git",
+                "reference": "756b8034600f3bdedbca255a6bf248ea0a29ffea"
+            },
             "dist": {
-                "type": "path",
-                "url": "/var/www/omnipay-redsys",
-                "reference": "605397c4f2b7d329e87d65a6c723de6339b52ace"
+                "type": "zip",
+                "url": "https://api.github.com/repos/goteo/omnipay-redsys/zipball/756b8034600f3bdedbca255a6bf248ea0a29ffea",
+                "reference": "756b8034600f3bdedbca255a6bf248ea0a29ffea",
+                "shasum": ""
             },
             "require": {
                 "guzzlehttp/psr7": "^2.0",
@@ -1491,9 +1497,10 @@
                 }
             ],
             "description": "Redsys (Credit card + Bizum)  payment gateway for the Omnipay PHP payment processing library",
-            "transport-options": {
-                "relative": false
-            }
+            "support": {
+                "source": "https://github.com/goteo/omnipay-redsys/tree/feat/refunds"
+            },
+            "time": "2026-04-28T13:58:42+00:00"
         },
         {
             "name": "evenement/evenement",
