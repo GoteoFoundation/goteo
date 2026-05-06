@@ -9,7 +9,8 @@ use PDOException;
 use stdClass;
 use function array_empty;
 
-class Contract extends Model {
+class Contract extends Model
+{
 
     const NATURAL_PERSON = 'natural_person';
     const LEGAL_PERSON = 'legal_person';
@@ -25,6 +26,7 @@ class Contract extends Model {
     public
         $project,
         $number, //numero de contrato
+        $ybid, // ID anual
         $date, // día anterior a la publicación
         $enddate, // un año después de la fecha del contrato
         $pdf, // si está generado aquí viene el nomre de archivo en
@@ -95,11 +97,12 @@ class Contract extends Model {
      * @param string $name
      * @return mixed
      */
-    public function __get($name) {
+    public function __get($name)
+    {
         switch ($name) {
             case "fullnum":
                 //num-00000000
-                return $this->number.'-'.$this->txtdate;
+                return $this->number . '-' . $this->txtdate;
                 break;
             default:
                 return $this->$name;
@@ -116,30 +119,28 @@ class Contract extends Model {
      * @param varchar(50) $id del proyecto
      * @return true (el control de errores habrá que hacerlo por email)
      */
-    public static function create ($id, &$errors = array()) {
-
+    public static function create($id, &$errors = array())
+    {
         $contract = Contract::get($id);
 
         if (!empty($contract)) {
             // ya tenemos registro de contrato
 
             // verificar fechas
-            if ( empty($contract->date) || empty($contract->enddate) ) {
+            if (empty($contract->date) || empty($contract->enddate)) {
 
                 // sacar datos del proyecto
                 $projData = Project::get($id, 'es');
-                if ( !empty($projData->published) ) {
+                if (!empty($projData->published)) {
                     $date = strtotime($projData->published);
-                    $contract->date = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)));
-                    $contract->enddate = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)+1));
+                    $contract->date = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d', $date) - 1, date('Y', $date)));
+                    $contract->enddate = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d', $date) - 1, date('Y', $date) + 1));
                 }
 
                 return $contract->save($errors);
-
             } else {
                 return $contract;
             }
-
         } else {
             // nuevo registro
             $contract = new Contract;
@@ -147,11 +148,24 @@ class Contract extends Model {
             // sacar datos del proyecto
             $projData = Project::get($id, 'es');
 
-            if ( !empty($projData->published) ) {
+            if (!empty($projData->published)) {
                 $date = strtotime($projData->published);
-                $contract->date = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)));
-                $contract->enddate = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d',$date)-1, date('Y', $date)+1));
+                $contract->date = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d', $date) - 1, date('Y', $date)));
+                $contract->enddate = date('Y-m-d', mktime(0, 0, 0, date('m', $date), date('d', $date) - 1, date('Y', $date) + 1));
             }
+
+            $year = date('Y');
+            $success = $projData->one_round ? $projData->passed : $projData->success;
+            if ($success) {
+                $year = date('Y', strtotime($success));
+            }
+
+            $yearCount = (int) self::query("SELECT COUNT(*) AS contracts FROM contract WHERE date >= :yearStart AND date <= :yearEnd", [
+                'yearStart' => $year . '-01-01',
+                'yearEnd' => $year . '-12-31'
+            ])->fetch(\PDO::FETCH_COLUMN);
+
+            $contract->ybid = 'AY' . $year . '-' . str_pad($yearCount + 1, 3, '0', \STR_PAD_LEFT);
         }
 
         $contract->type = 0; // inicialmente persona fisica
@@ -176,10 +190,10 @@ class Contract extends Model {
         $contract->country = $personalData->country;
 
         $contract->project_name = $projData->name;
-        $contract->project_url = SITE_URL . '/project/' .$projData->id;
+        $contract->project_url = SITE_URL . '/project/' . $projData->id;
         $contract->project_owner = $projData->owner;
         $contract->project_user = $projData->user->name;
-        $contract->project_profile = SITE_URL . '/user/profile/' .$projData->owner;
+        $contract->project_profile = SITE_URL . '/user/profile/' . $projData->owner;
 
         // campos de descripción del proyecto
         $contract->project_description = $projData->description;
@@ -207,7 +221,8 @@ class Contract extends Model {
      * @param varchar(50) $id  Project identifier
      * @return instancia de contrato
      */
- 	public static function get ($id) {
+    public static function get($id)
+    {
 
         $sql = "
             SELECT *, DATE_FORMAT(date, '%d%m%Y') as txtdate
@@ -223,7 +238,7 @@ class Contract extends Model {
             $contract->status = self::getStatus($id);
 
             // si no tiene flag de "listo para imprimir" solo lo mostramos y como borrador
-            $contract->draft = ($contract->status->ready||$contract->electronic) ? false : true;
+            $contract->draft = ($contract->status->ready || $contract->electronic) ? false : true;
 
             // cargamos los documentos
             $contract->docs = Contract\Document::getDocs($id);
@@ -233,9 +248,10 @@ class Contract extends Model {
             // aun no tenemos datos de contrato
             return null;
         }
-	}
+    }
 
-	public function validate(&$errors = array()) {
+    public function validate(&$errors = array())
+    {
         // Estos son errores que no permiten continuar
         if (empty($this->project)) {
             $errors[] = 'No hay ningun proyecto con el que relacionar el contrato';
@@ -246,8 +262,8 @@ class Contract extends Model {
             $nif_type = '';
             $valid_nif = Check::nif($this->nif, $nif_type);
             if ($this->legal_document_type != self::PASSPORT) {
-                if(!$valid_nif || $nif_type != $this->legal_document_type ) {
-                    if ($this->legal_document_type == self::NIF)  {
+                if (!$valid_nif || $nif_type != $this->legal_document_type) {
+                    if ($this->legal_document_type == self::NIF) {
                         $errors['nif'] = Text::get('validate-contract-nif-document-type');
                     } else {
                         $errors['nif'] = Text::get('validate-contract-cif-document-type');
@@ -256,10 +272,10 @@ class Contract extends Model {
             }
         }
 
-        if(isset($this->entity_cif)) {
+        if (isset($this->entity_cif)) {
             $cif_type = '';
             $valid_cif = Check::nif($this->entity_cif, $cif_type);
-            if(!$valid_cif || $cif_type != self::CIF ) {
+            if (!$valid_cif || $cif_type != self::CIF) {
                 $errors['entity_cif'] = Text::get('validate-contract-cif-document-type');
             }
         }
@@ -271,47 +287,48 @@ class Contract extends Model {
      * Gets the % of the filled project. 100% means it can be published
      * @return stdClass Object with parts and globals percents
      */
-    public function getValidation() {
+    public function getValidation()
+    {
         $res = new stdClass;
         $errors =  $fields = ['promoter' => [], 'entity' => [], 'accounts' => [], 'documents' => []];
 
         // 1. promoter
-        $promoter = [ 'name', 'nif', 'address', 'location', 'region', 'zipcode', 'country' ];
+        $promoter = ['name', 'nif', 'address', 'location', 'region', 'zipcode', 'country'];
         $total = count($promoter);
         $count = 0;
-        foreach($promoter as $field) {
-            if(!empty($this->{$field})) {
+        foreach ($promoter as $field) {
+            if (!empty($this->{$field})) {
                 continue;
             }
             $fields['promoter'][] = $field;
             $count++;
         }
-        if($count > 0) {
+        if ($count > 0) {
             $errors['promoter'][] = 'promoter';
         }
         // if(!Check::nif($this->nif)) {
         //     $count++;
         //     $errors['promoter'][] = 'promoter_nif';
         // }
-        $res->promoter = round(100 * ($total - $count)/$total);
+        $res->promoter = round(100 * ($total - $count) / $total);
 
         // 2. entity
-        if($this->type > 0) {
+        if ($this->type > 0) {
             $entity = ['entity_name', 'entity_cif', 'office', 'entity_address', 'entity_location', 'entity_region', 'entity_zipcode', 'entity_country'];
             $total = count($entity);
             $count = 0;
-            foreach($entity as $field) {
-                if(!empty($this->{$field})) {
+            foreach ($entity as $field) {
+                if (!empty($this->{$field})) {
                     continue;
                 }
                 $fields['entity'][] = $field;
                 $count++;
             }
-            if($count > 0) {
+            if ($count > 0) {
                 $errors['entity'][] = 'entity';
             }
 
-            $res->entity = round(100 * ($total - $count)/$total);
+            $res->entity = round(100 * ($total - $count) / $total);
         } else {
             $res->entity = 100;
         }
@@ -321,20 +338,20 @@ class Contract extends Model {
 
         $total = count($accounts);
         $count = 0;
-        foreach($accounts as $field) {
-            if(!empty($this->{$field})) {
+        foreach ($accounts as $field) {
+            if (!empty($this->{$field})) {
                 continue;
             }
             $fields['accounts'][] = $field;
             $count++;
         }
-        if($count > 0) {
+        if ($count > 0) {
             $errors['accounts'][] = 'accounts';
         }
-        $res->accounts = round(100 * ($total - $count)/$total);
+        $res->accounts = round(100 * ($total - $count) / $total);
 
         // 4. documents
-        if(!$this->docs) {
+        if (!$this->docs) {
             $errors['documents'][] = 'documents';
             $res->documents = 0;
         } else {
@@ -342,11 +359,11 @@ class Contract extends Model {
         }
         // Summary
         $sum = $total = 0;
-        foreach($res as $key => $percent) {
+        foreach ($res as $key => $percent) {
             $sum += (int)($percent);
             $total++;
         }
-        $res->global = round($sum/$total);
+        $res->global = round($sum / $total);
         $res->errors = $errors;
         $res->fields = $fields;
         $res->project = $this->id;
@@ -356,13 +373,15 @@ class Contract extends Model {
     /*
      * Segun si es una grabación parcial de impulsor o una grabación completa de admin
      */
-	public function save (&$errors = array()) {
+    public function save(&$errors = array())
+    {
         if (!$this->validate($errors)) return false;
 
-		try {
+        try {
             $fields = array(
                 'project',
                 'number',
+                'ybid',
                 'date',
                 'enddate',
                 'type',
@@ -403,23 +422,24 @@ class Contract extends Model {
                 'project_invest',
                 'project_return'
             );
-            if(static::get($this->project)) {
+            if (static::get($this->project)) {
                 $ok = $this->dbUpdate($fields, ['project']);
             } else {
                 $ok = $this->dbInsert($fields);
             }
 
             return $ok;
-		} catch(PDOException $e) {
-			$errors[] = "Los datos de contrato no se han guardado correctamente. Por favor, revise los datos." . $e->getMessage();
+        } catch (PDOException $e) {
+            $errors[] = "Los datos de contrato no se han guardado correctamente. Por favor, revise los datos." . $e->getMessage();
             return false;
-		}
-	}
+        }
+    }
 
     /*
      * Lista de contratos existentes para gestión
      */
- 	public static function getAll () {
+    public static function getAll()
+    {
 
         $list = array();
 
@@ -448,7 +468,8 @@ class Contract extends Model {
     /*
      * Lista de Proyectos que han rellenado algo del contrato
      */
- 	public static function getProjects () {
+    public static function getProjects()
+    {
 
         $list = array();
 
@@ -472,30 +493,32 @@ class Contract extends Model {
     /*
      * Obtener numero y fecha de contrato
      */
- 	public static function getNum ($id, $published = null) {
+    public static function getNum($id, $published = null)
+    {
 
         $query = static::query("
-            SELECT number, DATE_FORMAT(date, '%d%m%Y') as cdate
+            SELECT number, DATE_FORMAT(date, '%d%m%Y') as cdate, ybid
             FROM contract
             WHERE project = ?
             ", array($id));
 
         $reg = $query->fetchObject();
         if (!empty($reg->number) && !empty($reg->cdate)) {
-            return array($reg->number, $reg->cdate);
+            return array($reg->number, $reg->cdate, $reg->ybid);
         } else {
             // si no hay registro, la fecha de contrato es el día antes de la publicación del proyecto
             $dPublished = (isset($published)) ? strtotime($published) : strtotime(date('dmY'));
-            $date = date('dmY', mktime(0, 0, 0, date('m', $dPublished), date('d', $dPublished)-1, date('Y', $dPublished)));
+            $date = date('dmY', mktime(0, 0, 0, date('m', $dPublished), date('d', $dPublished) - 1, date('Y', $dPublished)));
             $num = 'Num';
-            return array($num, $date);
+            return array($num, $date, $reg->ybid);
         }
     }
 
     /*
      * Obtener estado de contrato
      */
- 	public static function getStatus ($id) {
+    public static function getStatus($id)
+    {
 
         $query = static::query("
             SELECT *
@@ -514,7 +537,8 @@ class Contract extends Model {
      * @param array $statuses array asociativo: campo => valor a modificar
      * @return bool si se ejecuta la sentencia o no
      */
-    public static function setStatus($id, $statuses, User $user) {
+    public static function setStatus($id, $statuses, User $user)
+    {
 
         $fields = array();
         $values = array();
@@ -560,7 +584,8 @@ class Contract extends Model {
      * @param string $value  nombre del archivo
      * @return bool si ok
      */
-    public function setPdf($name) {
+    public function setPdf($name)
+    {
 
         $sql = "UPDATE contract SET pdf = :pdf WHERE project = :id";
         $values = array(':id' => $this->project, ':pdf' => $name);
@@ -573,19 +598,20 @@ class Contract extends Model {
      * y los obligatorios por tipo de promotor
      * NOTA: en algunos casos usa los textos 'mandatory-' del proyecto
      */
-    public function check() {
+    public function check()
+    {
         //primero resetea los errores y los okeys
         $this->errors = self::blankErrors();
         $this->okeys  = self::blankErrors();
 
         $errors = &$this->errors;
-        $okeys  = &$this->okeys ;
+        $okeys  = &$this->okeys;
 
         /***************** Revisión de campos del paso PROMOTOR *****************/
         if (empty($this->name)) {
             $errors['promoter']['name'] = Text::get('mandatory-project-field-contract_name');
         } else {
-             $okeys['promoter']['name'] = 'ok';
+            $okeys['promoter']['name'] = 'ok';
         }
 
         if (empty($this->nif)) {
@@ -593,43 +619,43 @@ class Contract extends Model {
         } /*elseif ( !Check::nif($this->nif) ) {
             $errors['promoter']['nif'] = Text::get('validate-project-value-contract_nif');
         }*/ else {
-             $okeys['promoter']['nif'] = 'ok';
+            $okeys['promoter']['nif'] = 'ok';
         }
 
         if (empty($this->birthdate)) {
             $errors['promoter']['birthdate'] = Text::get('mandatory-project-field-contract_birthdate');
         } else {
-             $okeys['promoter']['birthdate'] = 'ok';
+            $okeys['promoter']['birthdate'] = 'ok';
         }
 
         if (empty($this->address)) {
             $errors['promoter']['address'] = Text::get('mandatory-project-field-address');
         } else {
-             $okeys['promoter']['address'] = 'ok';
+            $okeys['promoter']['address'] = 'ok';
         }
 
         if (empty($this->location)) {
             $errors['promoter']['location'] = Text::get('mandatory-project-field-residence');
         } else {
-             $okeys['promoter']['location'] = 'ok';
+            $okeys['promoter']['location'] = 'ok';
         }
 
         if (empty($this->region)) {
             $errors['promoter']['region'] = Text::get('mandatory-project-field-region');
         } else {
-             $okeys['promoter']['region'] = 'ok';
+            $okeys['promoter']['region'] = 'ok';
         }
 
         if (empty($this->zipcode)) {
             $errors['promoter']['zipcode'] = Text::get('mandatory-project-field-zipcode');
         } else {
-             $okeys['promoter']['zipcode'] = 'ok';
+            $okeys['promoter']['zipcode'] = 'ok';
         }
 
         if (empty($this->country)) {
             $errors['promoter']['country'] = Text::get('mandatory-project-field-country');
         } else {
-             $okeys['promoter']['country'] = 'ok';
+            $okeys['promoter']['country'] = 'ok';
         }
 
         /***************** FIN Revisión del paso PROMOTOR *****************/
@@ -639,7 +665,7 @@ class Contract extends Model {
             if (empty($this->entity_name)) {
                 $errors['entity']['entity_name'] = Text::get('mandatory-project-field-entity_name');
             } else {
-                 $okeys['entity']['entity_name'] = 'ok';
+                $okeys['entity']['entity_name'] = 'ok';
             }
 
             $cif_type = '';
@@ -649,44 +675,44 @@ class Contract extends Model {
             } elseif (!valid_cif || $cif_type != self::CIF) {
                 $errors['entity']['entity_cif'] = Text::get('validate-project-value-entity_cif');
             } else {
-                 $okeys['entity']['entity_cif'] = 'ok';
+                $okeys['entity']['entity_cif'] = 'ok';
             }
 
             if (empty($this->office)) {
                 $errors['entity']['office'] = Text::get('mandatory-project-field-entity_office');
             } else {
-                 $okeys['entity']['office'] = 'ok';
+                $okeys['entity']['office'] = 'ok';
             }
 
             // y la dirección
             if (empty($this->entity_address)) {
                 $errors['entity']['entity_address'] = Text::get('mandatory-project-field-address');
             } else {
-                 $okeys['entity']['entity_address'] = 'ok';
+                $okeys['entity']['entity_address'] = 'ok';
             }
 
             if (empty($this->entity_location)) {
                 $errors['entity']['entity_location'] = Text::get('mandatory-project-field-residence');
             } else {
-                 $okeys['entity']['entity_location'] = 'ok';
+                $okeys['entity']['entity_location'] = 'ok';
             }
 
             if (empty($this->entity_region)) {
                 $errors['entity']['entity_region'] = Text::get('mandatory-project-field-region');
             } else {
-                 $okeys['entity']['entity_region'] = 'ok';
+                $okeys['entity']['entity_region'] = 'ok';
             }
 
             if (empty($this->entity_zipcode)) {
                 $errors['entity']['entity_zipcode'] = Text::get('mandatory-project-field-zipcode');
             } else {
-                 $okeys['entity']['entity_zipcode'] = 'ok';
+                $okeys['entity']['entity_zipcode'] = 'ok';
             }
 
             if (empty($this->entity_country)) {
                 $errors['entity']['entity_country'] = Text::get('mandatory-project-field-country');
             } else {
-                 $okeys['entity']['entity_country'] = 'ok';
+                $okeys['entity']['entity_country'] = 'ok';
             }
 
             // y los legales
@@ -695,12 +721,12 @@ class Contract extends Model {
                 if (empty($this->reg_name)) {
                     $errors['entity']['reg_name'] = Text::get('mandatory-contract-reg_name_1');
                 } else {
-                     $okeys['entity']['reg_name'] = 'ok';
+                    $okeys['entity']['reg_name'] = 'ok';
                 }
                 if (empty($this->reg_number)) {
                     $errors['entity']['reg_number'] = Text::get('mandatory-contract-reg_number_1');
                 } else {
-                     $okeys['entity']['reg_number'] = 'ok';
+                    $okeys['entity']['reg_number'] = 'ok';
                 }
             }
 
@@ -709,35 +735,34 @@ class Contract extends Model {
                 if (empty($this->reg_name)) {
                     $errors['entity']['reg_name'] = Text::get('mandatory-contract-reg_name_1');
                 } else {
-                     $okeys['entity']['reg_name'] = 'ok';
+                    $okeys['entity']['reg_name'] = 'ok';
                 }
                 if (empty($this->reg_date)) {
                     $errors['entity']['reg_date'] = Text::get('mandatory-contract-reg_date_2');
                 } else {
-                     $okeys['entity']['reg_date'] = 'ok';
+                    $okeys['entity']['reg_date'] = 'ok';
                 }
                 if (empty($this->reg_number)) {
                     $errors['entity']['reg_number'] = Text::get('mandatory-contract-reg_number_2');
                 } else {
-                     $okeys['entity']['reg_number'] = 'ok';
+                    $okeys['entity']['reg_number'] = 'ok';
                 }
                 if (empty($this->reg_id)) {
                     $errors['entity']['reg_id'] = Text::get('mandatory-contract-reg_id_2');
                 } else {
-                     $okeys['entity']['reg_id'] = 'ok';
+                    $okeys['entity']['reg_id'] = 'ok';
                 }
                 if (empty($this->reg_idname)) {
                     $errors['entity']['reg_idname'] = Text::get('mandatory-contract-reg_idname_2');
                 } else {
-                     $okeys['entity']['reg_idname'] = 'ok';
+                    $okeys['entity']['reg_idname'] = 'ok';
                 }
                 if (empty($this->reg_idloc)) {
                     $errors['entity']['reg_idloc'] = Text::get('mandatory-contract-reg_idloc_2');
                 } else {
-                     $okeys['entity']['reg_idloc'] = 'ok';
+                    $okeys['entity']['reg_idloc'] = 'ok';
                 }
             }
-
         }
         /***************** FIN Revisión del paso ENTIDAD *****************/
 
@@ -745,7 +770,7 @@ class Contract extends Model {
         if (!empty($this->paypal) && empty($this->paypal_owner)) {
             $errors['accounts']['paypal_owner'] = Text::get('mandatory-contract-paypal_owner');
         } else {
-             $okeys['accounts']['paypal_owner'] = 'ok';
+            $okeys['accounts']['paypal_owner'] = 'ok';
         }
         if (empty($this->bank)) {
             $errors['accounts']['bank'] = Text::get('mandatory-contract-bank');
@@ -782,7 +807,8 @@ class Contract extends Model {
     }
 
     // para montar el texto de objetivo de financiación
-    public static function txtInvest($projData) {
+    public static function txtInvest($projData)
+    {
         $txt_invest_min = [];
         $txt_invest_opt = [];
         foreach ($projData->costs as $costData) {
@@ -806,7 +832,8 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
     }
 
     // para montar el texto de retornos
-    public static function txtReturn($projData) {
+    public static function txtReturn($projData)
+    {
         $licenses = array();
 
         foreach (License::getAll() as $l) {
@@ -918,5 +945,4 @@ En caso de conseguir el presupuesto óptimo, la recaudación cubriría los gasto
             Text::get('contract-legal-document-type-cif') => self::CIF
         ];
     }
-
 }

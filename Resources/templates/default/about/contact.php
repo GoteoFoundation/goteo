@@ -1,10 +1,17 @@
 <?php
 
+use Goteo\Application\Config;
+
 $page = $this->page;
 $tags = $this->tags;
 
 $captcha = $this->captcha;
 $known_user = \array_key_exists('name', $this->data) && \array_key_exists('email', $this->data);
+
+$chatbot = Config::get('chatbot.url');
+if ($known_user) {
+    $chatbot = \sprintf('%s?%s', $chatbot, \http_build_query(['user_id' => $this->data['id']]));
+}
 
 $this->layout('layout', [
     'bodyClass' => 'about',
@@ -29,7 +36,7 @@ $this->layout('layout', [
 <div id="main">
     <?php if ($known_user) : ?>
         <iframe
-            src="https://api.chatbotfactory.app/webchat/9369b5c9-e259-4014-a1a5-c71d329afe84"
+            src="<?= $chatbot ?>"
             style="width: 100%; height: 600px; border: none; border-radius: 10px;"></iframe>
     <?php endif ?>
     <div class="widget contact-message">

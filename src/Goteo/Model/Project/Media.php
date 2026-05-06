@@ -23,6 +23,7 @@ class Media {
     private const PEERTUBE_PLATAFORMESS_URL = "peertube.plataformess.org";
     private const PEERTUBE_XY_SPACE_URL = "tube.xy-space.de";
     private const PEERTUBE_LAGUIXETA_URL = "peertube.laguixeta.cat";
+    private const PEERTUBE_ANARTIST_URL = "video.anartist.org";
 
     public function __construct ($url) {
         $this->url = str_replace('http://', 'https://', $url);
@@ -150,7 +151,7 @@ class Media {
                     $code = static::getGissTvCode($bp['video']);
                     break;
 
-                case (preg_match('#^(http(?<https>s)?://)?(?:www\.)?((framatube|peertube(\.plataformess|\.laguixeta))(.org|.cat|tube\.xy-space\.de))/(w|videos/watch)/(?<video>[a-zA-Z0-9\-]+)#', $this->url, $pt)):
+                case (preg_match('#^(http(?<https>s)?://)?(?:www\.)?((framatube|peertube|video(\.plataformess|\.laguixeta|\.anartist))(.org|.cat|tube\.xy-space\.de))/(w|videos/watch)/(?<video>[a-zA-Z0-9\-]+)#', $this->url, $pt)):
                     $baseDomain = $this->getPeerTubeBaseDomainUrl($this->url);
                     $code = static::getPeerTubeCode($pt['video'], $baseDomain, $autoplay);
                     break;
@@ -180,6 +181,8 @@ class Media {
             return self::PEERTUBE_XY_SPACE_URL;
         } else if (str_contains($url, self::PEERTUBE_LAGUIXETA_URL)) {
             return self::PEERTUBE_LAGUIXETA_URL;
+        } else if (str_contains($url, self::PEERTUBE_ANARTIST_URL)) {
+            return self::PEERTUBE_ANARTIST_URL;
         }
 
         throw new Exception("Media video URL not matched!");
