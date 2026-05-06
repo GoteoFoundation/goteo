@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "261b7db5c4c1998658ac2925120123a5",
+    "content-hash": "9bf4a9450fdac4764697ac2430103430",
     "packages": [
         {
             "name": "amphp/amp",
@@ -1452,17 +1452,11 @@
         },
         {
             "name": "eseperio/omnipay-redsys",
-            "version": "v2.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Eseperio/omnipay-redsys.git",
-                "reference": "3abcb5bdabbe6a2627298e2e79fd3330d59707e8"
-            },
+            "version": "dev-main",
             "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Eseperio/omnipay-redsys/zipball/3abcb5bdabbe6a2627298e2e79fd3330d59707e8",
-                "reference": "3abcb5bdabbe6a2627298e2e79fd3330d59707e8",
-                "shasum": ""
+                "type": "path",
+                "url": "/var/www/omnipay-redsys",
+                "reference": "605397c4f2b7d329e87d65a6c723de6339b52ace"
             },
             "require": {
                 "guzzlehttp/psr7": "^2.0",
@@ -1476,7 +1470,6 @@
                     "Omnipay\\Redsys\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0-or-later"
             ],
@@ -1498,10 +1491,9 @@
                 }
             ],
             "description": "Redsys (Credit card + Bizum)  payment gateway for the Omnipay PHP payment processing library",
-            "support": {
-                "source": "https://github.com/Eseperio/omnipay-redsys/tree/v2.0.1"
-            },
-            "time": "2026-03-10T12:04:08+00:00"
+            "transport-options": {
+                "relative": false
+            }
         },
         {
             "name": "evenement/evenement",
@@ -12091,6 +12083,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "cron/cron": 20,
+        "eseperio/omnipay-redsys": 20,
         "jdorn/file-system-cache": 20,
         "lusitanian/oauth": 20,
         "rych/phpass": 10,
