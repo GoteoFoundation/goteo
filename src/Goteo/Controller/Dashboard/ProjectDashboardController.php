@@ -927,7 +927,7 @@ class ProjectDashboardController extends DashboardController {
         if(array_key_exists($filter['others'], $filters['others'])) {
             $filter_by['types'] = $filter['others'];
 
-            if($filter['others']['from_subscription']) {
+            if(array_key_exists('from_subscription', $filter['others'])) {
                 $filter_by['methods'] = [
                     StripeSubscriptionPaymentMethod::PAYMENT_METHOD_ID
                 ];
@@ -968,7 +968,6 @@ class ProjectDashboardController extends DashboardController {
 
         $invests = Invest::getList($filter_by, null, $offset, $limit, false, $order);
         $totals = Invest::getList($filter_by, null, 0, 0, 'all');
-
 
         $messages = [];
         foreach($invests as $invest) {
