@@ -69,6 +69,7 @@ dashboard-messegers-mail-sendto: 'Enviado a %s os participantes:'
 dashboard-my-wallet-available: 'Na actualidade tes <span class="pool-amount">%s</span> <span class="pool-desc">no teu portamoedas Goteo</span>'
 dashboard-my-wallet-contribute-button: Doar
 dashboard-my-wallet-pool-info: 'Máis información canto o uso do teu portamoedas'
+dashboard-my-wallet-pool-closed: 'Deshabilitamos <strong>as recargas ao cartón monedero</strong>, o saldo que tes segue dispoñible para facer pagamentos a proxectos.'
 dashboard-password-recover-advice: 'Asegúrate de reestablecer o teu contrasinal'
 dashboard-project-blog-fail: 'Contacta con nós'
 dashboard-project-blog-inactive: 'Sentímolo, a publicación de novidades neste proxecto está desactivada'
