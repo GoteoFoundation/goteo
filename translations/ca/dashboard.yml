@@ -99,6 +99,7 @@ dashboard-messegers-mail-sendto: 'Enviat a %s els/les participants:'
 dashboard-my-wallet-available: 'Actualment tens <span class="pool-amount">%s</span> <span class="pool-desc">al teu moneder Goteo</span>'
 dashboard-my-wallet-contribute-button: Repartir
 dashboard-my-wallet-pool-info: 'Més informació sobre l''ús del teu moneder'
+dashboard-my-wallet-pool-closed: 'Hem <strong>deshabilitat les recàrregues al moneder</strong>, el saldo que tens continua disponible per fer pagaments a projectes.'
 dashboard-no-projects: 'No tens cap projecte, pots crear-ne un <a href="/project/create">aquí</a>'
 dashboard-password-recover-advice: 'Assegura''t de restablir la teva contrasenya'
 dashboard-project-analytics-fail: 'S''ha produït un error en desar els identificadors per l''analítica'

@@ -65,17 +65,6 @@ $this->section('main-content');
 
                         </div>
 
-                        <?php if(!$this->skip_login && array_key_exists('pool', $this->pay_methods)): ?>
-                        <div class="checkbox no-tip">
-                            <label>
-                                <input class="no-margin-checkbox big-checkbox" type="checkbox" name="pool_on_fail" id="pool_on_fail" value="1">
-                                    <p class="label-checkbox">
-                                    <?= $this->text('invest-pool') ?><a data-toggle="modal" data-target="#myModal" href=""> <?= $this->text('invest-more-info') ?></a>
-                                    </p>
-                            </label>
-                        </div>
-                        <?php endif ?>
-
                         <?php if($this->tip): ?>
                         <div class="checkbox">
                             <label class="tip">

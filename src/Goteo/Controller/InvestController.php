@@ -429,7 +429,7 @@ class InvestController extends Controller {
                     'invested' => date('Y-m-d'),
                     'anonymous' => $request->query->has('anonymous'),
                     'resign' => $reward ? false : true,
-                    'pool' => $request->query->has('pool_on_fail')
+                    'pool' => false, //$request->query->has('pool_on_fail')
                 )
             );
 
