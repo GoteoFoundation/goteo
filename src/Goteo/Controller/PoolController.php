@@ -121,17 +121,18 @@ class PoolController extends Controller {
      */
     public function selectAmountAction(Request $request, $type = 'pool'): Response
     {
-        // TODO: add events
-        $amount = $request->query->get('amount');
-        $user = Session::getUser();
-        $pool = $user ? $user->getPool() : null;
+        return $this->redirect('/dashboard/wallet');
 
-        return $this->viewResponse('pool/select_amount', [
-            'step' => 1,
-            'type' => $type,
-            'pool' => $pool,
-            'amount' => $amount
-        ]);
+        //$amount = $request->query->get('amount');
+        //$user = Session::getUser();
+        //$pool = $user ? $user->getPool() : null;
+
+        //return $this->viewResponse('pool/select_amount', [
+        //    'step' => 1,
+        //    'type' => $type,
+        //    'pool' => $pool,
+        //    'amount' => $amount
+        //]);
     }
 
     /**
