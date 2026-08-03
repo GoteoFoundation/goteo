@@ -24,11 +24,11 @@ class ConverterReader {
     }
 
     public function getUrl() {
-        $this->url;
+        return $this->url;
     }
 
     public function getResult() {
-        $this->result;
+        return $this->result;
     }
 
     /**
