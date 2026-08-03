@@ -42,21 +42,15 @@ class ConverterReader
     public function get()
     {
 
-        $curl = curl_init($this->url);
+        $curl = \curl_init();
+        \curl_setopt($curl, CURLOPT_URL, $this->url);
+        \curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        \curl_setopt($curl, CURLOPT_USERAGENT, 'Goteo.org Currency Getter');
 
-        curl_setopt_array($curl, [
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_USERAGENT => 'Goteo.org',
-        ]);
+        $this->result = \curl_exec($curl);
 
-        $this->result = curl_exec($curl);
+        \curl_close($curl);
 
-        if ($this->result === false) {
-            error_log(curl_error($curl));
-        }
-
-        curl_close($curl);
 
         return $this->result;
     }
