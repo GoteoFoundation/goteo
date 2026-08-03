@@ -14,20 +14,24 @@ namespace Goteo\Library;
  * Clase para mantener una cache de rates
  */
 
-class ConverterReader {
+class ConverterReader
+{
     private $url;
     private $result;
 
-    public function setUrl($url) {
+    public function setUrl($url)
+    {
         $this->url = $url;
         return $this;
     }
 
-    public function getUrl() {
+    public function getUrl()
+    {
         return $this->url;
     }
 
-    public function getResult() {
+    public function getResult()
+    {
         return $this->result;
     }
 
@@ -35,17 +39,24 @@ class ConverterReader {
      *  Do a cUrl request
      *
      */
-    public function get() {
+    public function get()
+    {
 
-        $curl = \curl_init();
-        \curl_setopt( $curl, CURLOPT_URL, $this->url );
-        \curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
-        \curl_setopt( $curl, CURLOPT_USERAGENT, 'Goteo.org Currency Getter');
+        $curl = curl_init($this->url);
 
-        $this->result = \curl_exec( $curl );
+        curl_setopt_array($curl, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_USERAGENT => 'Goteo.org',
+        ]);
 
-        \curl_close( $curl );
+        $this->result = curl_exec($curl);
 
+        if ($this->result === false) {
+            error_log(curl_error($curl));
+        }
+
+        curl_close($curl);
 
         return $this->result;
     }
