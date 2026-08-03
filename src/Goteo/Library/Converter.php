@@ -70,15 +70,7 @@ class Converter {
 
         // verify data
         if (!$XML) {
-            // mail de aviso
-            $mailHandler = new Mail();
-            $mailHandler->to = Config::getMail('fail');
-            $mailHandler->subject = 'No coge divisas '.$this->source;
-            $mailHandler->content = 'Application\Currency->getData  no obtiene feed desde '.$this->getReader()->getUrl().' la respuesta es de '.strlen($this->getReader()->getResult());
-            $mailHandler->html = false;
-            $mailHandler->template = null;
-            $mailHandler->send();
-            unset($mailHandler);
+            error_log(\sprintf('Application\Currency->getData no obtiene feed desde %s (%s), la respuesta es de %s', $this->source, $this->getReader()->getUrl(), strlen($this->getReader()->getResult())));
 
             return null;
         }
