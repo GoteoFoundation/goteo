@@ -44,7 +44,10 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
 
         $builder = $this->getBuilder();
         $admin = Session::isAdmin();
-        if ($admin) {
+        $user = Session::getUser();
+        $canUserEdit = $user->hasPerm('edit-projects', $project->id);
+
+        if ($admin || $canUserEdit) {
             $builder
                 ->add('type', ChoiceType::class, [
                     'label' => 'project-campaign-type-label',
@@ -72,7 +75,7 @@ class ProjectCampaignForm extends AbstractFormProcessor implements FormProcessor
                 ]);
         }
 
-        if ($admin || $project->type != Conf::TYPE_PERMANENT ) {
+        if ($admin || $canUserEdit || $project->type != Conf::TYPE_PERMANENT ) {
             $builder
                 ->add('one_round', ChoiceType::class, [
                     'disabled' => $this->getReadonly(),

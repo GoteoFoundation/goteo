@@ -92,6 +92,16 @@ manager:
         - admin-module-stats # Can access to stats
     level: 50
 
+channelconsultant:
+    extends: checker # inherits permissions from role "user"
+    perms:
+        - edit-projects # Edit projects assigned as a consultant
+        - edit-published-projects # Edit any published project
+        - assign-checker # Assignate any other user for review projects
+        - admin-module-channel-resource # Can access to channel resource admin module
+        - full-html-edit # Affects if the user is allowed dangerous tags (iframe,...) in posts
+    level: 60
+
 consultant:
     extends: checker # inherits permissions from role "user"
     perms:
