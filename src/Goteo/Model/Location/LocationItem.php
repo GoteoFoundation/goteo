@@ -158,6 +158,10 @@ abstract class LocationItem extends \Goteo\Core\Model implements LocationInterfa
      */
     static public function createByIp($id, $ip){
         $cities = Config::get('geolocation.maxmind.cities');
+        
+        if (!$cities)
+            return false;
+        
         try {
             // This creates the Reader object, which should be reused across lookups.
             $reader = new \GeoIp2\Database\Reader($cities);
