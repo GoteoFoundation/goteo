@@ -22,7 +22,7 @@
             <div class="text-danger"><?= implode("\n<br>\n", $this->errors) ?></div>
         <?php endif ?>
 
-        <?= $this->form_form($this->raw('applyForm'), [], true); ?>
+        <?= $this->form_form($this->raw('applyform'), [], true); ?>
 
         </div>
     </div>
