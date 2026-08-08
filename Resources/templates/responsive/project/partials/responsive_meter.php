@@ -121,7 +121,7 @@ use Goteo\Library\Check;
                 <?= $this->text('project-view-metter-minimum') ?>
                 </div>
                 <div class="opt-min">
-                <?= amount_format($project->mincost) ?>
+                <?= amount_format($project->mincost, 0, false, false, true, $project->currency) ?>
                 </div>
             </div>
             <div class="item">
@@ -129,7 +129,7 @@ use Goteo\Library\Check;
                 <?= $this->text('project-view-metter-optimum') ?>
                 </div>
                 <div class="opt-min">
-                <?= amount_format($project->maxcost) ?>
+                <?= amount_format($project->maxcost, 0, false, false, true, $project->currency) ?>
                 </div>
             </div>
         </div>

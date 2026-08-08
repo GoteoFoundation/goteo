@@ -125,7 +125,7 @@ class Currency {
      *
      *  requires a Converter instance
      */
-    static public function amountFormat($amount, $decs = 0, $nosymbol = false, $revert = false, $format = true) {
+    static public function amountFormat($amount, $decs = 0, $nosymbol = false, $revert = false, $format = true, $current_currency = null) {
 
         // check odd behaviour
         if (!is_float($amount) && !is_numeric($amount)) {
@@ -139,6 +139,12 @@ class Currency {
         // currency data (htmnl, name, thous/decs)
         $ccy = static::$currencies[$currency];
 
+        // default -> EUR, project_currency -> USD/MXN
+        if ($current_currency) {
+            $default = $current_currency;
+        }
+
+        // session -> EUR, default -> USD
         if ($currency != $default) {
             $rates = $converter->getRates($default);
             $amount = round($revert ? $amount / $rates[$currency] : $amount * $rates[$currency]);
