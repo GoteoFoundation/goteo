@@ -1,0 +1,13 @@
+group: tips
+name: 'Face to face event'
+purpose: 'Mail template to be sent to owner of a project to recommend creating a face to face event'
+type: 'md'
+title: "Convierte tu presencialidad a donaciones"
+text: >
+    ¡Hola de nuevo %USERNAME%!
+    ¿Cómo está yendo todo?
+    Quizás has pensado en hacer difusión presencial: en tu local, en tu pueblo, en tu barrio,, o quizás aprovechar una feria, un evento o un espacio físico que te hayan cedido otros. ¡Es una oportunidad genial para difundir tu iniciativa y tu campaña de crowdfunding!
+    *Consejo 1*: Piensa que además de captar su interés en persona, tendrás también que *dirigirles a tu página de Goteo*. Cuanto más fácil les hagas ese camino, mejor. Piensa en imprimir cartelería, y sobre todo, incluye el enlace a tu página de Goteo o, mejor, directamente un *código QR*.
+    *Consejo 2*: Si te encuentras con el problema de que tu comunidad no está acostumbrada al entorno digital, tienes que ser muy didáctico y paciente. Puedes compartir nuestro [Tutorial Paso a Paso para donar](https://fundacion.goteo.org/blog/tutorial-paso-a-paso-para-aportar-a-un-proyecto), o incluso recorrer junto con esta(s) persona(s) tu página de Goteo y enséñales tú mismo, desde tu dispositivo, lo fácil que es donar a través de Goteo.
+    ¡Ánimo!
+    El equipo de Goteo.

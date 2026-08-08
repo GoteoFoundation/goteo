@@ -14,12 +14,13 @@ use Goteo\Application\Exception\ModelException;
 use Goteo\Application\Exception\ModelNotFoundException;
 use Goteo\Application\Lang;
 use Goteo\Application\App;
+use Goteo\Core\Model;
 use Symfony\Component\Yaml\Yaml;
 
 /*
  * Clase para gestionar las plantillas de los emails automáticos
  */
-class Template extends \Goteo\Core\Model {
+class Template extends Model {
 
     const MESSAGE_CONTACT = 1;     // Mensaje de contacto
     const MESSAGE_DONORS = 2;     // DEPRECATED Mensaje a los cofinanciadores DEPRECATED for MESSAGE_PROJECT_THREAD
@@ -117,8 +118,10 @@ class Template extends \Goteo\Core\Model {
     const DONOR_CHANGE_STATUS_VALIDATED = 'donor_change_status_validated';
     const DONOR_CHANGE_STATUS_DECLARED = 'donor_change_status_declared';
     const DONOR_CHANGE_STATUS_REJECTED = 'donor_change_status_rejected';
-
-
+    const FACE_TO_FACE_EVENT = 'face_to_face_event';
+    const ONLINE_EVENT = 'online_event';
+    const PRESS = 'press';
+    const INVEST_IN_SOCIAL_NETWORKS = 'invest_in_social_networks';
 
     public
         $id,
