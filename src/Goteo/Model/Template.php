@@ -117,8 +117,11 @@ class Template extends \Goteo\Core\Model {
     const DONOR_CHANGE_STATUS_VALIDATED = 'donor_change_status_validated';
     const DONOR_CHANGE_STATUS_DECLARED = 'donor_change_status_declared';
     const DONOR_CHANGE_STATUS_REJECTED = 'donor_change_status_rejected';
-
-
+    const THREE_MONTHS_BEFORE_END_OF_YEAR = 'three_months_before_end_of_year';
+    const ONE_MONTH_BEFORE_END_OF_YEAR = 'one_month_before_end_of_year';
+    const FIFTEEN_DAYS_BEFORE_END_OF_YEAR = 'fifteen_days_before_end_of_year';
+    const TEN_DAYS_BEFORE_DECLARING_DONATIONS = 'ten_days_before_declaring_donations';
+    const THREE_DAYS_BEFORE_DECLARING_DONATIONS = 'three_days_before_declaring_donations';
 
     public
         $id,

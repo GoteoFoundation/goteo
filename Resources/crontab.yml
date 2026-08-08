@@ -88,3 +88,28 @@ real:
         command: 'bin/console opendata -c'
         type: php
         nice: true
+    -
+        schedule: '0 0 1 10 *'
+        command: 'bin/console certificate_reminder >/dev/null 2>&1'
+        type: php
+        nice: true
+    -
+        schedule: '0 0 1 12 *'
+        command: 'bin/console certificate_reminder >/dev/null 2>&1'
+        type: php
+        nice: true
+    -
+        schedule: '0 0 15 12 *'
+        command: 'bin/console certificate_reminder >/dev/null 2>&1'
+        type: php
+        nice: true
+    -
+        schedule: '0 0 5 1 *'
+        command: 'bin/console certificate_reminder >/dev/null 2>&1'
+        type: php
+        nice: true
+    -
+        schedule: '0 0 12 1 *'
+        command: 'bin/console certificate_reminder --type-of-reminder three_days_before_declaring_donations'
+        type: php
+        nice: true
