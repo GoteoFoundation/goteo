@@ -252,6 +252,8 @@ class Config {
         self::addAdminControllers();
         self::addLegacyAdminControllers();
 
+		// Adding Redsys payment method
+		Payment::addMethod('Goteo\Payment\Method\RedsysPaymentMethod', true);
 		// Adding Pool (internal credit) payment method
 		Payment::addMethod('Goteo\Payment\Method\PoolPaymentMethod');
 		Payment::addMethod('Goteo\Payment\Method\PaypalPaymentMethod');
@@ -259,6 +261,8 @@ class Config {
 		Payment::addMethod('Goteo\Payment\Method\CashPaymentMethod', true);
 		// Adding Stripe (subscriptions) payment method
 		Payment::addMethod('Goteo\Payment\Method\StripeSubscriptionPaymentMethod', true);
+
+		Payment::defaultMethod('redsys');
 
 		// Plugins overwriting
 		foreach (self::getPlugins() as $plugin => $vars) {

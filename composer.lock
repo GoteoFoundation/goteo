@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "12a9b8cf145e309a2fbc8a89ffd63d09",
+    "content-hash": "c968723a61d039a7cbcc0831c5da5be3",
     "packages": [
         {
             "name": "amphp/amp",
@@ -1449,6 +1449,58 @@
                 "source": "https://github.com/erusev/parsedown/tree/1.7.x"
             },
             "time": "2019-12-30T22:54:17+00:00"
+        },
+        {
+            "name": "eseperio/omnipay-redsys",
+            "version": "dev-feat/refunds",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/goteo/omnipay-redsys.git",
+                "reference": "756b8034600f3bdedbca255a6bf248ea0a29ffea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/goteo/omnipay-redsys/zipball/756b8034600f3bdedbca255a6bf248ea0a29ffea",
+                "reference": "756b8034600f3bdedbca255a6bf248ea0a29ffea",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/psr7": "^2.0",
+                "omnipay/common": "3.*",
+                "php": ">=7.2.5",
+                "redsys/messages": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Omnipay\\Redsys\\": "src/"
+                }
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "E. Alamo",
+                    "email": "erosdelalamo@gmail.com",
+                    "homepage": "https://github.com/Eseperio"
+                },
+                {
+                    "name": "Javier Sampedro",
+                    "email": "jsampedro77@gmail.com",
+                    "homepage": "http://github.com/jsampedro77"
+                },
+                {
+                    "name": "NitsNets Studio",
+                    "email": "github@nitsnets.com",
+                    "homepage": "http://www.nitsnets.com"
+                }
+            ],
+            "description": "Redsys (Credit card + Bizum)  payment gateway for the Omnipay PHP payment processing library",
+            "support": {
+                "source": "https://github.com/goteo/omnipay-redsys/tree/feat/refunds"
+            },
+            "time": "2026-04-28T13:58:42+00:00"
         },
         {
             "name": "evenement/evenement",
@@ -5135,6 +5187,53 @@
                 }
             ],
             "time": "2021-07-11T12:37:55+00:00"
+        },
+        {
+            "name": "redsys/messages",
+            "version": "v1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eusonlito/redsys-Messages.git",
+                "reference": "ee1707651e7dd6f1517c5af377ac5613d3ef6490"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eusonlito/redsys-Messages/zipball/ee1707651e7dd6f1517c5af377ac5613d3ef6490",
+                "reference": "ee1707651e7dd6f1517c5af377ac5613d3ef6490",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Redsys\\Messages\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Lito",
+                    "email": "lito@eordes.com"
+                }
+            ],
+            "description": "Redsys/Sermepa/Servired TPV Messages lists",
+            "keywords": [
+                "messages",
+                "redsys",
+                "sermepa",
+                "servired",
+                "tpv"
+            ],
+            "support": {
+                "issues": "https://github.com/eusonlito/redsys-Messages/issues",
+                "source": "https://github.com/eusonlito/redsys-Messages/tree/v1.1.2"
+            },
+            "time": "2021-12-30T22:41:40+00:00"
         },
         {
             "name": "ringcentral/psr7",
@@ -11991,6 +12090,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "cron/cron": 20,
+        "eseperio/omnipay-redsys": 20,
         "jdorn/file-system-cache": 20,
         "lusitanian/oauth": 20,
         "rych/phpass": 10,
