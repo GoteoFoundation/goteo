@@ -225,8 +225,7 @@ class Image extends \Goteo\Core\Model {
         };
         $max_upload = $normalize(ini_get('upload_max_filesize'));
         $max_post = $normalize(ini_get('post_max_size'));
-        $memory_limit = $normalize(ini_get('memory_limit'));
-        $maxFileSize = min($max_upload, $max_post, $memory_limit);
+        $maxFileSize = min($max_upload, $max_post);
         $div = 1;
         if($units == 'kb') $div = 1024;
         elseif($units == 'mb') $div = 1024 * 1024;
